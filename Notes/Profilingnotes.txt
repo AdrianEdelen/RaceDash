@@ -1,0 +1,40 @@
+
+10/21 - no calcs being done, just splitting into bytes and identifying each packet Id
+this is also considering that the string manip is done already
+Currently with no calculations being done, we are approximately 16.5 times faster than the bus.
+extrapolating some data, the bus at 100% load will be about 4 times faster
+that puts us at .0002 s per message which brings us down to 4x faster than the bus
+this may get tricky, as we do more calcs, sometimes more than one per message,
+we also will have less processing power by a significant margin.
+
+doing two primary things, logging all packets, and doing human readable conversions.
+
+
+run 1: work laptop
+the total processing time is:  1.4880201816558838
+the total message time was:  26.482530117034912
+The average processing time of each packet is:  6.187451377004797e-05
+the average time between incomming messages is:  0.0011011904909574166
+The total message count was:  24049
+
+run 2: work laptop
+the total processing time is:  1.492008924484253
+the total message time was:  26.482530117034912
+The average processing time of each packet is:  6.204037275912733e-05
+the average time between incomming messages is:  0.0011011904909574166
+The total message count was:  24049
+
+run 3: work laptop, includes string parsing
+the total processing time is:  1.6027147769927979
+the total message time was:  26.482530117034912
+The average processing time of each packet is:  6.664371811687795e-05
+the average time between incomming messages is:  0.0011011904909574166
+The total message count was:  24049
+
+TODO:
+Begin work on message queue (this can be something that unit testing will work with)
+begin work on parsing of the messages
+begin work on logging messages
+begin work on reverse engineering packets, most packets we don't know what they do yet.
+logging should split file sizes every x MB or time and dump to disk, then upload to gdrive or something
+logging of raw data should be different than processed data logs, but they should be comparable (eg, accurate timestamps remain intact)
