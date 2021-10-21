@@ -1,11 +1,11 @@
 import os
 import can
-
+import connection
 
 
 def main():
 
-    os.system('sudo ip link set can0 type can bitrate 100000')
+    os.system('sudo ip link set can0 type can bitrate 500000')
     os.system('sudo ifconfig can0 up')
 
     can0 = can.interface.Bus(channel = 'can0', bustype = 'socketcan_ctypes')# socketcan_native
