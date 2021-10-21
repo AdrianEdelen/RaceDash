@@ -2,7 +2,6 @@
 
 class car:
     def __init__(self) -> None:
-        pass
         self.accelerator_position_percent 
         self.brake_position_percent       
         self.steering_angle_one           

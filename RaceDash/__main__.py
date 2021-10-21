@@ -4,9 +4,13 @@ import re
 from textwrap import wrap
 from packetProcessor import *
 from car import *
+from carSim import *
+import queue
 
 def main():
-    car = car()
+    sim = carSim()
+    sim.loadRaw()
+    curCar = car()
     #A NOTE OF WARNING FOR ANY ONLOOKERS:
     #THIS IS A HOT MESS
     # I AM PRETTY MUCH STILL AT THE EXPERIMENTATION STAGE
@@ -22,6 +26,14 @@ def main():
     # remove from queue
     # perform calcs
     # display/log
+    
+
+    while true:
+        messageQueue = queue.Queue()
+    
+        return
+
+
 
     start = time.time()
 
