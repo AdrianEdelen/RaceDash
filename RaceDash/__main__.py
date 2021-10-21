@@ -4,6 +4,15 @@ import re
 from textwrap import wrap
 
 def main():
+    #A NOTE OF WARNING FOR ANY ONLOOKERS:
+    #THIS IS A HOT MESS
+    # I AM PRETTY MUCH STILL AT THE EXPERIMENTATION STAGE
+    # DO NOT JUDGE THIS CODE
+
+
+
+
+
 
     # data processing
     # recieve a message
@@ -51,8 +60,21 @@ def main():
     #currently we have to just guess what the packet ID may be. this honestly may be fine
     #but if time starts becoming an issue we can order the packets by frequency
     # Primary goal is not to sacrifice packets.    
+    calcs = 0
     for line in canMessagesList:
         byteList = wrap(line[1], 2)
+        if len(byteList) == 8:
+            A = int(byteList[0], 16)
+            B = int(byteList[1], 16)
+            C = int(byteList[2], 16)
+            D = int(byteList[3], 16)
+            E = int(byteList[4], 16)
+            F = int(byteList[5], 16)
+            G = int(byteList[6], 16)
+            H = int(byteList[7], 16)
+        else:
+            continue
+        #for now we are going to ignore short packets
         if line[0] == '144':
             continue
         elif line[0] == '142':
@@ -62,10 +84,13 @@ def main():
             continue
         elif line[0] == '140':
             # accelpos
+            A / 2.55
+            G / 2.55
             # engine rpm
             # clutch pos
             # throttle pos
             # accel pedal on/off
+            calcs += 2
             continue
         elif line[0] == '156':
             continue
@@ -73,6 +98,20 @@ def main():
             continue
         elif line[0] == '018':
             # steering angle
+
+            #keep this for the love of god
+            #this is basicaly bytes to int LE, 
+            #with a sig/args like this bytesToIntLE(byteList, 0, 2)
+            #args are raw bytelist, starting pos? total bytes included (inclusive))
+            #in this case we want to start from the 7th byte, and take it and the next one
+            #what that really means (atleast for translations sake) is start from byte 8,
+            #grab the first 2, swap their order, and then & together adn take the int out of it
+            #this is a PAIN IN THE ASS
+            a = byteList[6]
+            b = byteList[7]
+            val = int(a + b, 16)
+            finalVal = val * (0.1)
+            calcs += 1
             continue
         elif line[0] == '0D4':
             # FL wheel speed
@@ -149,7 +188,7 @@ def main():
     
 
     aveIndTimes = processTime / messageCount
-
+    print ('calcs performed: ', calcs)
     print ('The average processing time of each packet is: ', aveIndTimes)
     print ('the average time between incomming messages is: ', ave)
     print ('The total message count was: ', messageCount)
