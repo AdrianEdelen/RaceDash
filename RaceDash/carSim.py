@@ -2,6 +2,7 @@
 
 class carSim:
     def __init__(self) -> None:
+        self.lines = 
         pass
 
     def loadRaw():
@@ -11,3 +12,6 @@ class carSim:
 
     def streamCanData(repeat: bool):
         return
+
+    def getNextmessage():
+

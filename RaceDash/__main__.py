@@ -28,7 +28,7 @@ def main():
     # display/log
     
 
-    while true:
+    while True:
         messageQueue = queue.Queue()
     
         return
