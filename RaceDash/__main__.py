@@ -2,17 +2,15 @@ import time
 import connection
 import re
 from textwrap import wrap
+from packetProcessor import *
+from car import *
 
 def main():
+    car = car()
     #A NOTE OF WARNING FOR ANY ONLOOKERS:
     #THIS IS A HOT MESS
     # I AM PRETTY MUCH STILL AT THE EXPERIMENTATION STAGE
     # DO NOT JUDGE THIS CODE
-
-
-
-
-
 
     # data processing
     # recieve a message
@@ -25,34 +23,19 @@ def main():
     # perform calcs
     # display/log
 
+    start = time.time()
+
     filepath = 'C:\\Users\\Mike\\Downloads\\candump1.log'
     file = open(filepath, 'r')
     lines = file.read().splitlines()
-    canList = []
-    canMessagesList = []
-    timestamps = []
-    for line in lines:
-        time1 = line[1:18]
-        
-        timestamps.append(float(time1))
-
-    messageCount = len(timestamps)
-    maxTime = max(timestamps)
-    minTime = min(timestamps)
-    totalTime = maxTime - minTime
     
-    ave = (totalTime / messageCount)
+    canList = []
 
     start = time.time()
-
     for line in lines:
-        canList.append(line[25:])
+        canList.append(packetProcessor.process_packet_string(line))
 
-    for line in canList:
-        a = line.split('#')
-        canMessagesList.append(a)
 
-    
 
     #average time between messages appears to be one ms
     
@@ -61,42 +44,41 @@ def main():
     #but if time starts becoming an issue we can order the packets by frequency
     # Primary goal is not to sacrifice packets.    
     calcs = 0
-    for line in canMessagesList:
+    for packet in canList:
         byteList = wrap(line[1], 2)
-        if len(byteList) == 8:
-            A = int(byteList[0], 16)
-            B = int(byteList[1], 16)
-            C = int(byteList[2], 16)
-            D = int(byteList[3], 16)
-            E = int(byteList[4], 16)
-            F = int(byteList[5], 16)
-            G = int(byteList[6], 16)
-            H = int(byteList[7], 16)
-        else:
-            continue
+        # if len(byteList) == 8:
+        #     A = int(byteList[0], 16)
+        #     B = int(byteList[1], 16)
+        #     C = int(byteList[2], 16)
+        #     D = int(byteList[3], 16)
+        #     E = int(byteList[4], 16)
+        #     F = int(byteList[5], 16)
+        #     G = int(byteList[6], 16)
+        #     H = int(byteList[7], 16)
+        
         #for now we are going to ignore short packets
-        if line[0] == '144':
+        if packet.id == '144':
             continue
-        elif line[0] == '142':
+        elif packet.id == '142':
             continue
-        elif line[0] == '141':
+        elif packet.id == '141':
             # gear
             continue
-        elif line[0] == '140':
+        elif packet.id == '140':
             # accelpos
-            A / 2.55
-            G / 2.55
+            #A / 2.55
+            #G / 2.55
             # engine rpm
             # clutch pos
             # throttle pos
             # accel pedal on/off
             calcs += 2
             continue
-        elif line[0] == '156':
+        elif packet.id == '156':
             continue
-        elif line[0] == '152':
+        elif packet.id == '152':
             continue
-        elif line[0] == '018':
+        elif packet.id == '018':
             # steering angle
 
             #keep this for the love of god
@@ -107,91 +89,89 @@ def main():
             #what that really means (atleast for translations sake) is start from byte 8,
             #grab the first 2, swap their order, and then & together adn take the int out of it
             #this is a PAIN IN THE ASS
-            a = byteList[6]
-            b = byteList[7]
-            val = int(a + b, 16)
-            finalVal = val * (0.1)
+            #a = byteList[6]
+            #b = byteList[7]
+            #val = int(a + b, 16)
+            
+            steeringAngle = (packetProcessor.byte_to_int_le(packet.data,0,2) * 0.1)
+            print(steeringAngle)
             calcs += 1
             continue
-        elif line[0] == '0D4':
+        elif packet.id == '0D4':
             # FL wheel speed
             # FR wheel speed
             # RL wheel speed
             # RR wheel speed
             continue
-        elif line[0] == '0D3':
+        elif packet.id == '0D3':
             continue
-        elif line[0] == '0D2':
+        elif packet.id == '0D2':
             continue
-        elif line[0] == '0D1':
+        elif packet.id == '0D1':
             # brake pos %
             # brake pressure
             continue
-        elif line[0] == '0D0':
+        elif packet.id == '0D0':
             # steering angle
             # lat accel
             # long accel
             # combined accel
             # yaw
             continue
-        elif line[0] == '282':
+        elif packet.id == '282':
             continue
-        elif line[0] == '370':
+        elif packet.id == '370':
             continue
-        elif line[0] == '440':
+        elif packet.id == '440':
             continue
-        elif line[0] == '361':
+        elif packet.id == '361':
             # gear
             continue
-        elif line[0] == '360':
+        elif packet.id == '360':
             # coolant temp
             # engine oil temp
             # cruise on off
             # cruise set
             # cruise speed
             continue
-        elif line[0] == '372':
+        elif packet.id == '372':
             continue
-        elif line[0] == '63B':
+        elif packet.id == '63B':
             continue
-        elif line[0] == '442':
+        elif packet.id == '442':
             continue
-        elif line[0] == '375':
+        elif packet.id == '375':
             continue
-        elif line[0] == '374':
+        elif packet.id == '374':
             continue
-        elif line[0] == '4C8':
+        elif packet.id == '4C8':
             continue
-        elif line[0] == '6E1':
+        elif packet.id == '6E1':
             continue
-        elif line[0] == '6E2':
+        elif packet.id == '6E2':
             continue
-        elif line[0] == '4DD':
+        elif packet.id == '4DD':
             continue
-        elif line[0] == '4C3':
+        elif packet.id == '4C3':
             continue
-        elif line[0] == '4C1':
+        elif packet.id == '4C1':
             continue
-        elif line[0] == '4C6':
+        elif packet.id == '4C6':
             continue
         else:
-            print(line[0])
+            print(packet.id)
 
         
 
     end = time.time()
     processTime = end - start
     print('the total processing time is: ',end - start)
-    print('the total message time was: ', totalTime)
+    print('the total message time was: ')
     
-    
-    
-
-    aveIndTimes = processTime / messageCount
     print ('calcs performed: ', calcs)
-    print ('The average processing time of each packet is: ', aveIndTimes)
-    print ('the average time between incomming messages is: ', ave)
-    print ('The total message count was: ', messageCount)
+    print ('The average processing time of each packet is: ')
+    print ('the average time between incomming messages is: ')
+    print ('The total message count was: ')
     a = False
     # connection.start_can_interface()
 
