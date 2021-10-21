@@ -33,6 +33,9 @@ def main():
     # perform calcs
     # display/log
     
+    #the carSim is good for testing, but will ultimately be fleshed out fully as a full replayer
+
+
     messageQueue = queue.Queue()
     while True:
         nextPacket = sim.getNextmessage()
