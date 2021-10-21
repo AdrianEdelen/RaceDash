@@ -7,6 +7,12 @@ from car import *
 from carSim import *
 import queue
 
+def getMessageTask():
+
+
+    return
+
+
 def main():
     sim = carSim()
     sim.loadRaw()
@@ -31,20 +37,16 @@ def main():
     while True:
         nextPacket = sim.getNextmessage()
         messageQueue.put(nextPacket)
-        while messageQueue.not_empty:
+        if messageQueue.not_empty:
             curMess = messageQueue.get()
             packetProcessor.process_packet_string(curMess)
+            messageQueue.task_done()
             print(messageQueue.unfinished_tasks)
 
 
     #average time between messages appears to be one ms
-    
-
     #currently we have to just guess what the packet ID may be. this honestly may be fine
     #but if time starts becoming an issue we can order the packets by frequency
     # Primary goal is not to sacrifice packets.    
-    
-    
-
     # connection.shutdown_can_interface()
 main()
