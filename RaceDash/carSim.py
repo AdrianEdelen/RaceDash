@@ -1,10 +1,11 @@
-
+import threading
+import queue
 
 class carSim:
     def __init__(self) -> None:
         self.pos = 0
         self.lines = ''
-        
+        self.messageQueue = queue.Queue()
 
     def loadRaw(self, filepath: str):
         file = open(filepath, 'r')
@@ -13,7 +14,7 @@ class carSim:
     def streamCanData(repeat: bool):
         return
 
-    def getNextmessage(self):
+    def getNextMessage(self):
         try:
             curPacket = self.lines[self.pos]
             self.pos += 1
@@ -22,5 +23,8 @@ class carSim:
             curPacket = self.lines[self.pos]
             self.pos += 1
         finally:
-            return curPacket
+            self.messageQueue.put(curPacket)
 
+    def getMessageTask(self):
+        threading.Timer(.001,self.getNextMessage()).start()
+        

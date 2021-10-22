@@ -7,10 +7,7 @@ from car import *
 from carSim import *
 import queue
 
-def getMessageTask():
 
-
-    return
 
 
 def main():
@@ -34,11 +31,14 @@ def main():
     # display/log
     
     #the carSim is good for testing, but will ultimately be fleshed out fully as a full replayer
+    inp = input('Do you want to run the sim?')
+    if inp == 'y':
 
-
-    messageQueue = queue.Queue()
+        carSim.getMessageTask()
+        messageQueue = carSim.messageQueue
+    
     while True:
-        nextPacket = sim.getNextmessage()
+        nextPacket = sim.getNextMessage()
         messageQueue.put(nextPacket)
         if messageQueue.not_empty:
             curMess = messageQueue.get()
