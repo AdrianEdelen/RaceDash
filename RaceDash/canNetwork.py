@@ -2,6 +2,8 @@ import os
 import queue
 import threading
 import time
+#import can
+#from can.interface import Bus
 
 """The can network operates by starting a thread
    and then queue all of the messages on the network
@@ -30,6 +32,11 @@ class canCommunication(canNetworkInterface):
     def startConnection(self):
         os.system('sudo ip link set can0 type can bitrate 500000')
         os.system('sudo ifconfig can0 up')
+        #can.rc['interface'] = 'socketcan'
+        #can.rc['channel'] = 'can0'
+        #can.rc['bitrate'] = 500000
+        #bus = Bus()
+
         return
     def closeConnection(self):
         os.system('sudo ifconfig can0 down')

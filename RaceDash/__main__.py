@@ -7,6 +7,35 @@ import canNetwork
 
 
 def main():
+
+    #bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=500000)
+    #messageReader  = BufferedReader()
+    #logger/db = Logger()
+
+    #while True:
+        # msg = messageReader.get_message()
+        #try:
+            #thing = cmdDict[msg.id]
+        # except KeyError:
+        #     print('Unknown packet ID', packet.id)
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     print('***********************************************')
     print('*******************Main Menu*******************')
     print('* 1) Read can data from car                   *')
@@ -39,6 +68,7 @@ def main():
 
         curCar.canNetworkInterface.messageQueue.task_done()
         if curCar.canNetworkInterface.messageQueue.unfinished_tasks > 0:
-            print(curCar.canNetworkInterface.messageQueue.unfinished_tasks)
+            print('Warning: message processing behind, data may be delayed: ', 
+            curCar.canNetworkInterface.messageQueue.unfinished_tasks)
 
 main()
