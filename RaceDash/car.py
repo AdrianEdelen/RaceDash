@@ -1,7 +1,9 @@
 
 
 class car:
-    def __init__(self) -> None:
+    def __init__(self, canNetworkInterface) -> None:
+        self.canNetworkInterface = canNetworkInterface
+        
         self.accelerator_position_percent = 0
         self.brake_position_percent = 0
         self.steering_angle_one = 0

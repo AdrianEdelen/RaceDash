@@ -1,55 +1,22 @@
-import time
-import connection
-import re
+from threading import Thread
+from packetCommand import *
 from textwrap import wrap
 from packetProcessor import *
 from car import *
-from carSim import *
-import queue
-
-
+import canNetwork
 
 
 def main():
-    sim = carSim()
-    sim.loadRaw('resources\candump-2021-10-20_203215.log')
-    curCar = car()
-    #A NOTE OF WARNING FOR ANY ONLOOKERS:
-    #THIS IS A HOT MESS
-    # I AM PRETTY MUCH STILL AT THE EXPERIMENTATION STAGE
-    # DO NOT JUDGE THIS CODE
-
-    # data processing
-    # recieve a message
-    # pop into queue
-    # log with timestamp
-
-    # process messages
-    # get first message in queue list
-    # remove from queue
-    # perform calcs
-    # display/log
-    
-    #the carSim is good for testing, but will ultimately be fleshed out fully as a full replayer
-    inp = input('Do you want to run the sim?')
-    if inp == 'y':
-
-        carSim.getMessageTask()
-        messageQueue = carSim.messageQueue
+    curCar = car(canNetwork.simCanComm) #instantiate our car
+    curCar.canNetworkInterface.startConnection() #open the can bus connection
+    curCar.canNetworkInterface.startRecieveThread() #start listening for packets
     
     while True:
-        nextPacket = sim.getNextMessage()
-        messageQueue.put(nextPacket)
-        if messageQueue.not_empty:
-            curMess = messageQueue.get()
-            packetProcessor.process_packet_string(curMess)
-            messageQueue.task_done()
-            print(messageQueue.unfinished_tasks)
+        curMess = curCar.canNetworkInterface.messageQueue.get(True)
+        packet = packetProcessor.process_packet_string(curMess)
+        
+        curCar.canNetworkInterface.messageQueue.task_done()
+        if curCar.canNetworkInterface.messageQueue.unfinished_tasks > 0:
+            print(curCar.canNetworkInterface.messageQueue.unfinished_tasks)
 
-
-    #average time between messages appears to be one ms
-    #currently we have to just guess what the packet ID may be. this honestly may be fine
-    #but if time starts becoming an issue we can order the packets by frequency
-    # Primary goal is not to sacrifice packets.    
-    # connection.shutdown_can_interface()
 main()

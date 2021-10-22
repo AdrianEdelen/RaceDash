@@ -36,6 +36,7 @@ class packetProcessor:
             newList.append(byteList[-(bytesToMergePos - startBytePos)])
         return int(''.join(newList), 16)
 
+
         
     def identifyPacket(packet):
         if packet.id == '144':
