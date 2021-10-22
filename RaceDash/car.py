@@ -1,7 +1,7 @@
-
+from canNetwork import *
 
 class car:
-    def __init__(self, canNetworkInterface) -> None:
+    def __init__(self, canNetworkInterface: canNetworkInterface) -> None:
         self.canNetworkInterface = canNetworkInterface
         
         self.accelerator_position_percent = 0

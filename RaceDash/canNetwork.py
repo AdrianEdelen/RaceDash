@@ -27,7 +27,7 @@ class canCommunication(canNetworkInterface):
     def __init__(self) -> None:
         super().__init__()
 
-    def startConnection():
+    def startConnection(self):
         os.system('sudo ip link set can0 type can bitrate 500000')
         os.system('sudo ifconfig can0 up')
         return
@@ -47,32 +47,36 @@ class simCanComm(canNetworkInterface):
         self.pos = 0
         self.lines = ''
         self.messageQueue = queue.Queue()
+        self.worker = None
 
     def startConnection(self):
         file = open('resources\candump-2021-10-20_203215.log', 'r')
         self.lines = file.read().splitlines()
 
     def closeConnection(self):
-        #kill the queue
-        #kill the thread
+        #TODO kill the queue
+        #TODO kill the thread
         pass
 
     def startRecieveThread(self):
-        worker = threading.Thread(target=self.recieveMessage, args=(1, self))
-        worker.setDaemon()
-        worker.start()
+        self.worker = threading.Thread(target=self.recieveMessage, args=())
+        self.worker.setDaemon(False)
+        self.worker.start()
 
     def recieveMessage(self):
-        time.time.sleep(.0001)
-        try:
-            curPacket = self.lines[self.pos]
-            self.pos += 1
-        except IndexError:
-            self.pos = 0
-            curPacket = self.lines[self.pos]
-            self.pos += 1
-        finally:
-            self.messageQueue.put(curPacket)
+        while True:
+            #time.sleep(.00001)
+            #TODO instead of sleeping the thread here, instead get the
+            #timestamp and sleep for the appropriate time
+            try:
+                curPacket = self.lines[self.pos]
+                self.pos += 1
+            except IndexError:
+                self.pos = 0
+                curPacket = self.lines[self.pos]
+                self.pos += 1
+            finally:
+                self.messageQueue.put(curPacket)
 
     def sendMessage(self):
         pass
