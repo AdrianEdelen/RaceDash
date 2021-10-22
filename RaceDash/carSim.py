@@ -6,8 +6,7 @@ class carSim:
         self.lines = ''
         
 
-    def loadRaw(self):
-        filepath = 'C:\\Users\\Mike\\Downloads\\candump1.log'
+    def loadRaw(self, filepath: str):
         file = open(filepath, 'r')
         self.lines = file.read().splitlines()
 

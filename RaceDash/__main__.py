@@ -15,7 +15,7 @@ def getMessageTask():
 
 def main():
     sim = carSim()
-    sim.loadRaw()
+    sim.loadRaw('resources\candump-2021-10-20_203215.log')
     curCar = car()
     #A NOTE OF WARNING FOR ANY ONLOOKERS:
     #THIS IS A HOT MESS
