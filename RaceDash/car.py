@@ -1,9 +1,13 @@
+from can.message import Message
 from canNetwork import *
+from packetCommand import *
 
 class car:
-    def __init__(self, canNetworkInterface: canNetworkInterface) -> None:
-        self.canNetworkInterface = canNetworkInterface
-        
+    def __init__(self, canBus: canNetworkInterface) -> None:
+        self.canBus = canBus
+        self.commands =  commandDict().commands
+        self.currentMessage = None
+
         self.accelerator_position_percent = 0
         self.brake_position_percent = 0
         self.steering_angle_one = 0
@@ -29,3 +33,8 @@ class car:
         self.cruise_control_set = 0
         self.cruise_speed = 0
         self.gear_two = 0
+
+
+
+    def dispose(self):
+        self.canBus.closeConnection()

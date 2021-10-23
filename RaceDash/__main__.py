@@ -4,37 +4,8 @@ from textwrap import wrap
 from packetProcessor import *
 from car import *
 import canNetwork
-import can
 
 def main():
-
-    
-    #logger/db = Logger()
-
-    
-        
-        
-        #try:
-            #thing = cmdDict[msg.id]
-        #except KeyError:
-             #print('Unknown packet ID', packet.id)
-
-        
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     print('***********************************************')
     print('*******************Main Menu*******************')
@@ -46,35 +17,19 @@ def main():
     userInput = int(input())
 
     if userInput == 1:
-
         curCar = car(canNetwork.canCommunication()) #instantiate our car
     elif userInput == 2:
-        curCar = car(canNetwork.simCanComm()) #instantiate sim car
+        curCar = car(canNetwork.simCanCommOld()) #instantiate sim car
     else:
         exit()
 
     cmdDict = commandDict().commands
-    curCar.canNetworkInterface.startConnection() #open the can bus connection
-    #curCar.canNetworkInterface.startRecieveThread() #start listening for packets
-    
-    while True:
-        msg = curCar.canNetworkInterface.messageReader.get_message(0)
-        print(msg)
 
-
-
-    while False:
-        #time.sleep(10)
-        curMess = curCar.canNetworkInterface.messageQueue.get(True)
-        packet = packetProcessor.process_packet_string(curMess)
-        try:
-            thing = cmdDict[packet.id]
-        except KeyError:
-            print('Unknown packet ID', packet.id)
-
-        curCar.canNetworkInterface.messageQueue.task_done()
-        if curCar.canNetworkInterface.messageQueue.unfinished_tasks > 0:
-            print('Warning: message processing behind, data may be delayed: ', 
-            curCar.canNetworkInterface.messageQueue.unfinished_tasks)
+    try:
+        curCar.canBus.startConnection() #open the can bus connection
+        curCar.canBus.startRecieveThread()
+    except KeyboardInterrupt:
+        print('Shutting Down')
+        os.system('sudo ifconfig can0 down')
 
 main()

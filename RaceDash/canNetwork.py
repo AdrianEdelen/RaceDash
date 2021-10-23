@@ -3,7 +3,9 @@ import queue
 import threading
 import time
 import can
-#from can.interface import Bus
+from can.bus import BusState
+from can.interface import Bus
+from sys import platform
 
 """The can network operates by starting a thread
    and then queue all of the messages on the network
@@ -13,12 +15,14 @@ import can
    real world logs"""
    #in the future I intend to add timestamp checking to play back messages in real time
 class canNetworkInterface:
-    messageReader = can.BufferedReader
+    #messageReader = can.BufferedReader
     def startConnection():
         pass
     def closeConnection():
         pass
     def startRecieveThread():
+        pass
+    def startSendThread():
         pass
     def recieveMessage():
         pass
@@ -29,30 +33,59 @@ class canCommunication(canNetworkInterface):
     def __init__(self) -> None:
         super().__init__()
         self.bus = None
-        self.messageReader = None
 
     def startConnection(self):
-        #os.system('sudo ip link set can0 type can bitrate 500000')
-        #os.system('sudo ifconfig can0 up')
+        os.system('sudo ip link set can0 type can bitrate 500000')
+        os.system('sudo ifconfig can0 up')
+        if platform == "linux" or platform == "linux2":
+            os.system('sudo ip link set can0 type can bitrate 500000')
+            os.system('sudo ifconfig can0 up')
+        elif platform == "darwin":
+            # OS X
+            pass
+        elif platform == "win32":
+            # Windows...
+            pass
+
         self.bus = can.interface.Bus(bustype='socketcan', channel='can0', bitrate=500000)
-        self.messageReader  = can.BufferedReader()
-        #can.rc['interface'] = 'socketcan'
-        #can.rc['channel'] = 'can0'
-        #can.rc['bitrate'] = 500000
-        #bus = Bus()
+        self.bus.state = BusState.ACTIVE
 
-        return
     def closeConnection(self):
-        os.system('sudo ifconfig can0 down')
-        return
+        if platform == "linux" or platform == "linux2":
+            os.system('sudo ifconfig can0 down')
+        elif platform == "darwin":
+            # OS X
+            pass
+        elif platform == "win32":
+            # Windows...
+            pass
+    
     def startRecieveThread(self):
-        pass
-    def recieveMessage(self):
-        pass
+        self.worker = threading.Thread(target=self.recieveMessage, args=())
+        self.worker.setDaemon(False)
+        self.worker.start()
+
+    def startSendThread(self):
+        self.worker = threading.Thread(target=self.sendMessage, args=())
+        self.worker.setDaemon(False)
+        self.worker.start()
+
+    def recieveMessage(self) -> can.Message:
+        while True:
+            msg = can.Message(self.bus.recv())
+            msg.timeStamp
+            msg.arbitration_id
+            msg.data
+            msg.channel
     def sendMessage(self):
+
         pass
 
-class simCanComm(canNetworkInterface):
+
+#This implementation is outdated, it is based on the string that can-utils logs
+#we will be making our own logs that is conducive to our style
+#Deprecated
+class simCanCommOld(canNetworkInterface):
     def __init__(self) -> None:
         super().__init__()
         self.pos = 0
@@ -74,6 +107,9 @@ class simCanComm(canNetworkInterface):
         self.worker.setDaemon(False)
         self.worker.start()
 
+    def startSendThread():
+        pass
+        
     def recieveMessage(self):
         while True:
             #time.sleep(.00001)
