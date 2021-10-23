@@ -1,5 +1,6 @@
 
 from typing import DefaultDict
+import can
 
 """
 The packetCommand module takes all the possible packet ids from a car and performs the operations
@@ -14,8 +15,6 @@ that contain the appropriate data.
 
 """
 
-
-
 class commandDict:
     def __init__(self):
         self.commands = {
@@ -26,28 +25,28 @@ class commandDict:
             '6E2': _6E2, '4DD': _4DD, '4C3': _4C3, '4C1': _4C1, '4C6': _4C6 }
         
 class packetCommandInterface:
-    def exec():
+    def exec(msg: can.Message):
         pass
 
 class _144(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         #unknown
         print('parsed packed id 144')
         pass
 
 class _142(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         #unknown
         print('parsed packed id 142')
         pass
 
 class _141(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 141')
         pass
 
 class _140(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         # accelpos
         #A / 2.55
         #G / 2.55
@@ -59,17 +58,17 @@ class _140(packetCommandInterface):
         pass
 
 class _156(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 156')
         pass
 
 class _152(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 152')
         pass
 
 class _018(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         # steering angle
 
         #keep this for the love of god
@@ -90,7 +89,7 @@ class _018(packetCommandInterface):
         pass
 
 class _0D4(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         # FL wheel speed
         # FR wheel speed
         # RL wheel speed
@@ -99,26 +98,26 @@ class _0D4(packetCommandInterface):
         pass
 
 class _0D3(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         #unknown
         print('parsed packed id 0D3')
         pass
 
 class _0D2(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         #unknown
         print('parsed packed id 0D2')
         pass
 
 class _0D1(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         # brake pos %
         # brake pressure
         print('parsed packed id 0D1')
         pass
 
 class _0D0(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         # steering angle
         # lat accel
         # long accel
@@ -128,28 +127,28 @@ class _0D0(packetCommandInterface):
         pass
 
 class _282(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 282')
         pass
 
 class _370(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 370')
         pass
 
 class _440(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 440')
         pass   
 
 class _361(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         # gear
         print('parsed packed id 361')
         pass
 
 class _360(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         # coolant temp
         # engine oil temp
         # cruise on off
@@ -159,68 +158,67 @@ class _360(packetCommandInterface):
         pass
 
 class _372(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 372')
         pass
 
 class _63B(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 63B')
         pass
 
 class _442(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 442')
         pass
 
 class _375(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 375')
         pass
 
 class _374(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 374')
         pass
 
 class _4C8(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 4C8')
         pass
 
 class _6E1(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 6E1')
         pass
 
 class _6E2(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 6E2')
         pass
 
 class _4DD(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 4DD')
         pass
 
 class _4C3(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 4C3')
         pass
 
 class _4C1(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 4C1')
         pass
 
 class _4C6(packetCommandInterface):
-    def exec():
+    def exec(msg: can.Message):
         print('parsed packed id 4C6')
         pass
 
 class unknown(packetCommandInterface):
-    def exec():
-
-        #print(packet.id)
+    def exec(msg: can.Message):
+        print(msg.arbitration_id)
         pass
             
