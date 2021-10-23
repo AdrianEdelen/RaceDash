@@ -4,20 +4,20 @@ from textwrap import wrap
 from packetProcessor import *
 from car import *
 import canNetwork
-
+import can
 
 def main():
 
-    #bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=500000)
-    #messageReader  = BufferedReader()
+    
     #logger/db = Logger()
 
-    #while True:
-        # msg = messageReader.get_message()
+    
+        
+        
         #try:
             #thing = cmdDict[msg.id]
-        # except KeyError:
-        #     print('Unknown packet ID', packet.id)
+        #except KeyError:
+             #print('Unknown packet ID', packet.id)
 
         
         
@@ -55,9 +55,15 @@ def main():
 
     cmdDict = commandDict().commands
     curCar.canNetworkInterface.startConnection() #open the can bus connection
-    curCar.canNetworkInterface.startRecieveThread() #start listening for packets
+    #curCar.canNetworkInterface.startRecieveThread() #start listening for packets
     
     while True:
+        msg = curCar.canNetworkInterface.messageReader.get_message(0)
+        print(msg)
+
+
+
+    while False:
         #time.sleep(10)
         curMess = curCar.canNetworkInterface.messageQueue.get(True)
         packet = packetProcessor.process_packet_string(curMess)

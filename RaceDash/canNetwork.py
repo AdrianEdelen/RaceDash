@@ -2,7 +2,7 @@ import os
 import queue
 import threading
 import time
-#import can
+import can
 #from can.interface import Bus
 
 """The can network operates by starting a thread
@@ -13,7 +13,7 @@ import time
    real world logs"""
    #in the future I intend to add timestamp checking to play back messages in real time
 class canNetworkInterface:
-    
+    messageReader = can.BufferedReader
     def startConnection():
         pass
     def closeConnection():
@@ -28,10 +28,14 @@ class canNetworkInterface:
 class canCommunication(canNetworkInterface):
     def __init__(self) -> None:
         super().__init__()
+        self.bus = None
+        self.messageReader = None
 
     def startConnection(self):
-        os.system('sudo ip link set can0 type can bitrate 500000')
-        os.system('sudo ifconfig can0 up')
+        #os.system('sudo ip link set can0 type can bitrate 500000')
+        #os.system('sudo ifconfig can0 up')
+        self.bus = can.interface.Bus(bustype='socketcan', channel='can0', bitrate=500000)
+        self.messageReader  = can.BufferedReader()
         #can.rc['interface'] = 'socketcan'
         #can.rc['channel'] = 'can0'
         #can.rc['bitrate'] = 500000
