@@ -14,6 +14,11 @@ the method process the data of the message and sets the properties of the car ob
 
 """
 
+"""I am not sure what to do with this. for now I am leaving this code in here because it is a lot
+of boiler plate that I don't want to retype, but I am not sure if this pattern is actually
+any faster than if else, or easier to read, or easier to expand.
+if it ends up being faster and a giant if else is no good, we may come back to it"""
+
 """
 self.commands = {
             '144': _144, '142': _142, '141': _141, '140': _140, '156': _156, '152': _152,
@@ -32,25 +37,26 @@ class commandDict:
             1595: _63B, 1090: _442,  885: _375,  884: _374, 1224: _4C8, 1761: _6E1,
             1762: _6E2, 1245: _4DD, 1219: _4C3, 1217: _4C1, 1222: _4C6 }
         
+
+
 class packetCommandInterface:
-    def exec(msg: can.Message.data):
+    def exec(msg: can.Message):
         pass
 
 class _144(packetCommandInterface):
-    def exec(msg: can.Message.data):
+    def exec(msg: can.Message):
         #unknown
-        print('parsed packed id 144')
-        pass
-
+        return 'parsed packet id 144'
+        
 class _142(packetCommandInterface):
     def exec(msg: can.Message.data):
         #unknown
-        print('parsed packed id 142')
+        print('parsed packet id 142')
         pass
 
 class _141(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 141')
+        print('parsed packet id 141')
         pass
 
 class _140(packetCommandInterface):
@@ -62,17 +68,17 @@ class _140(packetCommandInterface):
         # clutch pos
         # throttle pos
         # accel pedal on/off
-        print('parsed packed id 140')
+        print('parsed packet id 140')
         pass
 
 class _156(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 156')
+        print('parsed packet id 156')
         pass
 
 class _152(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 152')
+        print('parsed packet id 152')
         pass
 
 class _018(packetCommandInterface):
@@ -93,7 +99,7 @@ class _018(packetCommandInterface):
             
         #steeringAngle = (packetProcessor.byte_to_int_le(packet.data,0,2) * 0.1)
         #print(steeringAngle)
-        print('parsed packed id 018')
+        print('parsed packet id 018')
         pass
 
 class _0D4(packetCommandInterface):
@@ -102,26 +108,26 @@ class _0D4(packetCommandInterface):
         # FR wheel speed
         # RL wheel speed
         # RR wheel speed
-        print('parsed packed id 0D4')
+        print('parsed packet id 0D4')
         pass
 
 class _0D3(packetCommandInterface):
     def exec(msg: can.Message.data):
         #unknown
-        print('parsed packed id 0D3')
+        print('parsed packet id 0D3')
         pass
 
 class _0D2(packetCommandInterface):
     def exec(msg: can.Message.data):
         #unknown
-        print('parsed packed id 0D2')
+        print('parsed packet id 0D2')
         pass
 
 class _0D1(packetCommandInterface):
     def exec(msg: can.Message.data):
         # brake pos %
         # brake pressure
-        print('parsed packed id 0D1')
+        print('parsed packet id 0D1')
         pass
 
 class _0D0(packetCommandInterface):
@@ -131,28 +137,28 @@ class _0D0(packetCommandInterface):
         # long accel
         # combined accel
         # yaw
-        print('parsed packed id 0D0')
+        print('parsed packet id 0D0')
         pass
 
 class _282(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 282')
+        print('parsed packet id 282')
         pass
 
 class _370(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 370')
+        print('parsed packet id 370')
         pass
 
 class _440(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 440')
+        print('parsed packet id 440')
         pass   
 
 class _361(packetCommandInterface):
     def exec(msg: can.Message.data):
         # gear
-        print('parsed packed id 361')
+        print('parsed packet id 361')
         pass
 
 class _360(packetCommandInterface):
@@ -162,67 +168,67 @@ class _360(packetCommandInterface):
         # cruise on off
         # cruise set
         # cruise speed
-        print('parsed packed id 360')
+        print('parsed packet id 360')
         pass
 
 class _372(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 372')
+        print('parsed packet id 372')
         pass
 
 class _63B(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 63B')
+        print('parsed packet id 63B')
         pass
 
 class _442(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 442')
+        print('parsed packet id 442')
         pass
 
 class _375(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 375')
+        print('parsed packet id 375')
         pass
 
 class _374(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 374')
+        print('parsed packet id 374')
         pass
 
 class _4C8(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 4C8')
+        print('parsed packet id 4C8')
         pass
 
 class _6E1(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 6E1')
+        print('parsed packet id 6E1')
         pass
 
 class _6E2(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 6E2')
+        print('parsed packet id 6E2')
         pass
 
 class _4DD(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 4DD')
+        print('parsed packet id 4DD')
         pass
 
 class _4C3(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 4C3')
+        print('parsed packet id 4C3')
         pass
 
 class _4C1(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 4C1')
+        print('parsed packet id 4C1')
         pass
 
 class _4C6(packetCommandInterface):
     def exec(msg: can.Message.data):
-        print('parsed packed id 4C6')
+        print('parsed packet id 4C6')
         pass
 
 class unknown(packetCommandInterface):

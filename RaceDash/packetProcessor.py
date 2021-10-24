@@ -15,9 +15,13 @@ class packetProcessor:
         timeStamp =float(re.sub(r'[\(\)]', '', packetParts[0]))
         device = packetParts[1]
         idAndMessage = packetParts[2].split('#')
-        id = idAndMessage[0]
+        id = int(idAndMessage[0], 16)
         data = idAndMessage[1].zfill(16)
-        return packet(device, id, data, timeStamp)
+        byteList = wrap(data, 2)
+        bArr = []
+        for b in byteList:
+            bArr.append(int(b,16))
+        return packet(device, id, bArr, timeStamp)
        
 
     def byte_to_int_le(data: str, startBytePos: int, bytesToMergePos: int) -> int:
