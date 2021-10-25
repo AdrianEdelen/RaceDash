@@ -48,7 +48,6 @@ class canCommunication(canNetworkInterface):
     def __init__(self) -> None:
         super().__init__()
         self.bus = None
-        self.Queue = queue.Queue()
 
     def startConnection(self):
         os.system('sudo ip link set can0 type can bitrate 500000')
@@ -126,7 +125,7 @@ class simCanCommOld(canNetworkInterface):
         
     def recieveMessage(self):
         while True:
-            #time.sleep(.00001)
+            time.sleep(.001)
             #TODO instead of sleeping the thread here, instead get the
             #timestamp and sleep for the appropriate time
             try:

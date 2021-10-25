@@ -24,10 +24,14 @@ class packetProcessor:
         return packet(device, id, bArr, timeStamp)
        
 
-    def byte_to_int_le(data: str, startBytePos: int, bytesToMergePos: int) -> int:
-        byteList = wrap(data, 2)
+    #This is hacky
+    def byte_to_int_le(data: bytearray, startBytePos: int, bytesToMergePos: int) -> int:
         newList = []
         for startBytePos in range(bytesToMergePos):
-            newList.append(byteList[-(bytesToMergePos - startBytePos)])
-        return int(''.join(newList), 16)
+            newList.append(data[-(bytesToMergePos - startBytePos)])
+        
+        a = int.from_bytes(newList, "big")
+        return  a
+
+
 

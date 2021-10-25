@@ -36,9 +36,10 @@ def main():
 
 
         while True:
-            time.sleep(.25)
+            time.sleep(.016)
             os.system('cls' if os.name == 'nt' else 'clear')
             print(curCar)
+            print('packets behind: ', curCar.canBus.Queue.unfinished_tasks)
 
 
     except KeyboardInterrupt:

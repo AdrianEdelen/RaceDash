@@ -37,36 +37,21 @@ class car:
     def __str__(self) -> str:
         return f'''\
 ***********************************************
-accel pedal %..........: {self.accelerator_position_percent}
-brake pos %............: {self.brake_position_percent}
-steering angle 1.......: {self.steering_angle_one}
-speed MPH..............: {self.speed_mph}
-engine RPM.............: {self.engine_rpm}
-coolant Temp...........: {self.coolant_temp}
-engine oil temp........: {self.engine_oil_temp}
-brake Pressure.........: {self.brake_pressure}
-clutch position........: {self.clutch_position}
-gear 1.................: {self.gear_one}
-throttle position......: {self.throttle_position}
-lateral accel..........: {self.lateral_accel}
-long accel.............: {self.long_accel}
-combined accel.........: {self.combined_accel}
-yaw rate...............: {self.yaw_rate}
-wheel speed FL.........: {self.wheel_speed_FL}
-wheel speed FR.........: {self.wheel_speed_FR}
-wheel speed RL.........: {self.wheel_speed_RL}
-wheel speed RR.........: {self.wheel_speed_RR}
-steering anglw 2.......: {self.steering_angle_two}
-accel pedal (on/off)...: {self.accel_pedal_on_off}
-cruise control (on/off): {self.cruise_control_on_off}
-cruise control set.....: {self.cruise_control_set}
-cruise control speed...: {self.cruise_speed}
+accel pedal %..........: {self.accelerator_position_percent}  | brake pos %............: {self.brake_position_percent}
+steering angle 1.......: {self.steering_angle_one}  | speed MPH..............: {self.speed_mph}
+engine RPM.............: {self.engine_rpm}  | coolant Temp...........: {self.coolant_temp}
+engine oil temp........: {self.engine_oil_temp}  | brake Pressure.........: {self.brake_pressure}
+clutch position........: {self.clutch_position}  | gear 1.................: {self.gear_one}
+throttle position......: {self.throttle_position}  | lateral accel..........: {self.lateral_accel}
+long accel.............: {self.long_accel}  | combined accel.........: {self.combined_accel}
+yaw rate...............: {self.yaw_rate}  | wheel speed FL.........: {self.wheel_speed_FL}
+wheel speed FR.........: {self.wheel_speed_FR}  | wheel speed RL.........: {self.wheel_speed_RL}
+wheel speed RR.........: {self.wheel_speed_RR}  | steering anglw 2.......: {self.steering_angle_two}
+accel pedal (on/off)...: {self.accel_pedal_on_off}  | cruise control (on/off): {self.cruise_control_on_off}
+cruise control set.....: {self.cruise_control_set}  | cruise control speed...: {self.cruise_speed}
 gear 2.................: {self.gear_two}
 '''
-
-        pass
         
-
     #as i get more comfortable with threading
     #the goal here is to start thread to process the packet and then kill it,
     #ideally, this means that we don't have to block or get behind on a particularly difficult
@@ -81,74 +66,78 @@ gear 2.................: {self.gear_two}
         self.canBus.closeConnection()
 
     def calcCanMessage(self):
-        msg:can.Message = self.canBus.Queue.get(True)
-        msgId = msg.arbitration_id
-        msgData = msg.data
-        #need to time this and find out what messages come the most
-        #the other way to speed it up may be to apply some multi level bit masks
-        #that can potentially change the ifelse, to more of a binary search
-        if msgId == 324:
-            pass
-        if msgId == 322:
-            pass
-        if msgId == 321:
-            pass
-        if msgId == 320:
-            pass
-        if msgId == 342:
-            pass
-        if msgId == 338:
-            pass
-        if msgId == 24:
-            #steering angle
+        while True:
 
-            pass
-        if msgId == 212:
-            pass
-        if msgId == 323:
-            pass
-        if msgId == 210:
-            pass
-        if msgId == 209:
-            pass
-        if msgId == 208:
-            pass
-        if msgId == 642:
-            pass
-        if msgId == 880:
-            pass
-        if msgId == 1088:
-            pass
-        if msgId == 865:
-            pass
-        if msgId == 864:
-            pass
-        if msgId == 882:
-            pass
-        if msgId == 1595:
-            pass
-        if msgId == 1090:
-            pass
-        if msgId == 885:
-            pass
-        if msgId == 884:
-            pass
-        if msgId == 1224:
-            pass
-        if msgId == 1761:
-            pass
-        if msgId == 1762:
-            pass
-        if msgId == 1245:
-            pass
-        if msgId == 1219:
-            pass
-        if msgId == 1217:
-            pass
-        if msgId == 1222:
-            pass
-        else:
-            print('unknown ID: ', msgId)
+            msg:can.Message = self.canBus.Queue.get(True)
+            self.canBus.Queue.task_done()
+            msgId = msg.arbitration_id
+            msgData = msg.data
+            #need to time this and find out what messages come the most
+            #the other way to speed it up may be to apply some multi level bit masks
+            #that can potentially change the ifelse, to more of a binary search
+            if msgId == 324:
+                continue
+            elif msgId == 211:
+                continue
+            elif msgId == 322:
+                continue
+            elif msgId == 321:
+                continue
+            elif msgId == 320:
+                continue
+            elif msgId == 342:
+                continue
+            elif msgId == 338:
+                continue
+            elif msgId == 24:
+                #steering angle
+                self.steering_angle_one =  round(packetProcessor.byte_to_int_le(msgData, 0, 2) * 0.1, 4)
+            elif msgId == 212:
+                continue
+            elif msgId == 323:
+                continue
+            elif msgId == 210:
+                continue
+            elif msgId == 209:
+                continue
+            elif msgId == 208:
+                continue
+            elif msgId == 642:
+                continue
+            elif msgId == 880:
+                continue
+            elif msgId == 1088:
+                continue
+            elif msgId == 865:
+                continue
+            elif msgId == 864:
+                continue
+            elif msgId == 882:
+                continue
+            elif msgId == 1595:
+                continue
+            elif msgId == 1090:
+                continue
+            elif msgId == 885:
+                continue
+            elif msgId == 884:
+                continue
+            elif msgId == 1224:
+                continue
+            elif msgId == 1761:
+                continue
+            elif msgId == 1762:
+                continue
+            elif msgId == 1245:
+                continue
+            elif msgId == 1219:
+                continue
+            elif msgId == 1217:
+                continue
+            elif msgId == 1222:
+                continue
+            else:
+                print('unknown ID: ', msgId)
 
 
 
