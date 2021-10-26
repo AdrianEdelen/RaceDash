@@ -1,5 +1,5 @@
 from threading import Thread
-from packetCommand
+from packetCommand import commandDict
 from textwrap import wrap
 from packetProcessor import *
 from car import *

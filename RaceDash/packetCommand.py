@@ -30,7 +30,7 @@ self.commands = {
             '6E2': _6E2, '4DD': _4DD, '4C3': _4C3, '4C1': _4C1, '4C6': _4C6 }
             """
 
-
+#TODO Get the car ref passed into these functions, so we can update the car from here
 class commandDict:
     
     def _144(self, msg: can.Message.data):
