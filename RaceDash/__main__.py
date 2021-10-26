@@ -1,5 +1,5 @@
 from threading import Thread
-from packetCommand import *
+from packetCommand
 from textwrap import wrap
 from packetProcessor import *
 from car import *
@@ -27,6 +27,7 @@ def main():
     #updating the properties of our car object in the background.
     #that means we can access the car periodically and get the current state of it
     try:
+        
         curCar.canBus.startConnection() #open the can bus connection
         curCar.startProcessorThread() #start processing packets
         curCar.canBus.startRecieveThread() #start listening for packets

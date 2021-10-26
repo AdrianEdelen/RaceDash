@@ -125,7 +125,7 @@ class simCanCommOld(canNetworkInterface):
         
     def recieveMessage(self):
         while True:
-            time.sleep(.001)
+            #time.sleep(.001)
             #TODO instead of sleeping the thread here, instead get the
             #timestamp and sleep for the appropriate time
             try:

@@ -27,6 +27,7 @@ class packetProcessor:
     #This is hacky
     def byte_to_int_le(data: bytearray, startBytePos: int, bytesToMergePos: int) -> int:
         newList = []
+        
         for startBytePos in range(bytesToMergePos):
             newList.append(data[-(bytesToMergePos - startBytePos)])
         
