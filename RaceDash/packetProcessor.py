@@ -29,8 +29,7 @@ class packetProcessor:
         newList = []
         
         for startBytePos in range(bytesToMergePos):
-            newList.append(data[-(bytesToMergePos - startBytePos)])
-        
+            newList.append(data[-(bytesToMergePos - startBytePos)]) 
         a = int.from_bytes(newList, "big")
         return  a
 
