@@ -32,3 +32,42 @@ class packetProcessor:
             newList.append(data[-(bytesToMergePos - startBytePos)]) 
         a = int.from_bytes(newList, "big")
         return  a
+
+
+    #since we are working with individual bytes very often, it can be more
+    #pleasant to read if the bytes are 'named'
+    #another addition is since our data can be UP TO 8 bytes long, but may be less
+    #we can check that when we get the byte here to keep the calculation simpler
+    def getByteA(data: bytearray):
+        if data.__len__ > 0:
+            return data[0]
+        
+    def getByteB(data: bytearray):
+        if data.__len__ > 1:
+            return data[1]
+        
+    def getByteC(data: bytearray):
+        if data.__len__ > 2:
+            return data[2]
+        
+    def getByteD(data: bytearray):
+        if data.__len__ > 3:
+            return data[3]
+        
+    def getByteE(data: bytearray):
+        if data.__len__ > 4:
+            return data[4]
+        
+    def getByteF(data: bytearray):
+        if data.__len__ > 5:
+            return data[5]
+        
+    def getByteG(data: bytearray):
+        if data.__len__ > 6:
+            return data[6]
+        
+    def getByteH(data: bytearray):
+        if data.__len__ > 7:
+            return data[7]
+        
+    
