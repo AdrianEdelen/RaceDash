@@ -32,6 +32,3 @@ class packetProcessor:
             newList.append(data[-(bytesToMergePos - startBytePos)]) 
         a = int.from_bytes(newList, "big")
         return  a
-
-
-
