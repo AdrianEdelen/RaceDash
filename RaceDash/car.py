@@ -1,13 +1,12 @@
 from can.message import Message
 from canNetwork import *
-from packetCommand import *
+from packetCommand import commandDict
+
 
 class car:
     def __init__(self, canBus: canNetworkInterface) -> None:
         self.canBus = canBus
         
-        
-
         self.accelerator_position_percent = 0
         self.brake_position_percent = 0
         self.steering_angle_one = 0
@@ -67,77 +66,17 @@ gear 2.................: {self.gear_two}
 
     def calcCanMessage(self):
         while True:
-
+            
             msg:can.Message = self.canBus.Queue.get(True)
-            self.canBus.Queue.task_done()
             msgId = msg.arbitration_id
             msgData = msg.data
-            #need to time this and find out what messages come the most
-            #the other way to speed it up may be to apply some multi level bit masks
-            #that can potentially change the ifelse, to more of a binary search
-            if msgId == 324:
-                continue
-            elif msgId == 211:
-                continue
-            elif msgId == 322:
-                continue
-            elif msgId == 321:
-                continue
-            elif msgId == 320:
-                continue
-            elif msgId == 342:
-                continue
-            elif msgId == 338:
-                continue
-            elif msgId == 24:
-                #steering angle
-                self.steering_angle_one =  round(packetProcessor.byte_to_int_le(msgData, 0, 2) * 0.1, 4)
-            elif msgId == 212:
-                continue
-            elif msgId == 323:
-                continue
-            elif msgId == 210:
-                continue
-            elif msgId == 209:
-                continue
-            elif msgId == 208:
-                continue
-            elif msgId == 642:
-                continue
-            elif msgId == 880:
-                continue
-            elif msgId == 1088:
-                continue
-            elif msgId == 865:
-                continue
-            elif msgId == 864:
-                continue
-            elif msgId == 882:
-                continue
-            elif msgId == 1595:
-                continue
-            elif msgId == 1090:
-                continue
-            elif msgId == 885:
-                continue
-            elif msgId == 884:
-                continue
-            elif msgId == 1224:
-                continue
-            elif msgId == 1761:
-                continue
-            elif msgId == 1762:
-                continue
-            elif msgId == 1245:
-                continue
-            elif msgId == 1219:
-                continue
-            elif msgId == 1217:
-                continue
-            elif msgId == 1222:
-                continue
+            if msgId in commandDict.commands:
+                msgFunc = commandDict.commands[msgId]
+                msgFunc(self, msgData)
             else:
-                print('unknown ID: ', msgId)
+                print('Unknown Packet Id: ', msgId)
+            self.canBus.Queue.task_done()
+
 
 
 
