@@ -125,13 +125,14 @@ class simCanCommOld(canNetworkInterface):
         
     def recieveMessage(self):
         while True:
-            #time.sleep(.001)
+            time.sleep(.001)
             #TODO instead of sleeping the thread here, instead get the
             #timestamp and sleep for the appropriate time
             try:
                 curPacket = self.lines[self.pos]
                 self.pos += 1
             except IndexError:
+                print('new loop')
                 self.pos = 0
                 curPacket = self.lines[self.pos]
                 self.pos += 1

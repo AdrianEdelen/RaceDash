@@ -44,49 +44,49 @@ class packetProcessor:
     #another addition is since our data can be UP TO 8 bytes long, but may be less
     #we can check that when we get the byte here to keep the calculation simpler
     def getByteA(data: bytearray):
-        if data.__len__ > 0:
+        if len(data) > 0:
             return data[0]
         else:
             return 0
         
     def getByteB(data: bytearray):
-        if data.__len__ > 1:
+        if len(data) > 1:
             return data[1]
         else:
             return 0
         
     def getByteC(data: bytearray):
-        if data.__len__ > 2:
+        if len(data) > 2:
             return data[2]
         else:
             return 0
         
     def getByteD(data: bytearray):
-        if data.__len__ > 3:
+        if len(data) > 3:
             return data[3]
         else:
             return 0
         
     def getByteE(data: bytearray):
-        if data.__len__ > 4:
+        if len(data) > 4:
             return data[4]
         else:
             return 0
         
     def getByteF(data: bytearray):
-        if data.__len__ > 5:
+        if len(data) > 5:
             return data[5]
         else:
-            return 0
+            return 
         
     def getByteG(data: bytearray):
-        if data.__len__ > 6:
+        if len(data) > 6:
             return data[6]
         else:
             return 0
         
     def getByteH(data: bytearray):
-        if data.__len__ > 7:
+        if len(data) > 7:
             return data[7]
         else:
             return 0
