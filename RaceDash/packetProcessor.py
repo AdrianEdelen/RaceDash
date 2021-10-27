@@ -25,6 +25,11 @@ class packetProcessor:
        
 
     #This is hacky
+    #slim shady voice -Something's wrong and I can feel it.
+    #i think this needs to go away, and instead we will just get bytes as we see fit
+    #for ex. instead of btie 0,2
+    #we will just get byte 7 and byte 8 and & them together.
+    #see id:018
     def byte_to_int_le(data: bytearray, startBytePos: int, bytesToMergePos: int) -> int:
         newList = []
         

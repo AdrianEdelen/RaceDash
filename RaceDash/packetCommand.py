@@ -9,6 +9,7 @@ import car
    packet processing thread
 """
 
+#Warning, a lot of the calculations are empirical, they don't always make sense
 class commandDict:
     
     def _144(car:car.car, msg: can.Message.data):
@@ -16,13 +17,11 @@ class commandDict:
 
     def _142(car:car.car, msg: can.Message.data):
         # unknown
-        print('parsed packet id 142')
-        pass
+        return
 
     def _141(car:car.car, msg: can.Message.data):
-        print('parsed packet id 141')
-        pass
-
+        return
+        
     def _140(car:car.car, msg: can.Message.data):
         #Accelerator Position %
         car.accelerator_position_percent = msg[0] / 2.55
@@ -31,45 +30,42 @@ class commandDict:
         # clutch pos
         # throttle pos
         # accel pedal on/off
-        print('parsed packet id 140')
-        pass
 
     def _156(car:car.car, msg:can.Message.data):
-        
-        print('parsed packet id 156')
-        pass
+        return
 
     def _152(car:car.car, msg: can.Message.data):
-        print('parsed packet id 152')
-        pass
+        return
 
     def _018(car:car.car, msg: can.Message.data):
         # Steering Angle
-        car.steering_angle_one=  round(packetProcessor.byte_to_int_le(msg, 0, 2) * 0.1, 4)
+        #instead of this
+        # car.steering_angle_one=  round(packetProcessor.byte_to_int_le(msg, 0, 2) * 0.1, 4)
+        #possibly something like this. we can also get the byte letters at the beginning of the
+        G = packetProcessor.getByteG(msg)
+        H = packetProcessor.getByteH(msg)
+        intval = int.from_bytes(G,H, 'big')
+        car.steering_angle_one = intval * 0.1
 
     def _0D4(car:car.car, msg: can.Message.data):
         # FL wheel speed
         # FR wheel speed
         # RL wheel speed
         # RR wheel speed
-        print('parsed packet id 0D4')
-        pass
+        return
 
     def _0D3(car:car.car, msg: can.Message.data):
         # unknown
-        print('parsed packet id 0D3')
-        pass
+        return
 
     def _0D2(car:car.car, msg: can.Message.data):
         # unknown
-        print('parsed packet id 0D2')
-        pass
+        return
 
     def _0D1(car:car.car, msg: can.Message.data):
         # brake pos %
         # brake pressure
-        print('parsed packet id 0D1')
-        pass
+        return
 
     def _0D0(car:car.car, msg: can.Message.data):
         # steering angle
@@ -77,25 +73,20 @@ class commandDict:
         # long accel
         # combined accel
         # yaw
-        print('parsed packet id 0D0')
-        pass
+        return
 
     def _282(car:car.car, msg: can.Message.data):
-        print('parsed packet id 282')
-        pass
+        return
 
     def _370(car:car.car, msg: can.Message.data):
-        print('parsed packet id 370')
-        pass
+        return
 
     def _440(car:car.car, msg: can.Message.data):
-        print('parsed packet id 440')
-        pass
+        return
 
     def _361(car:car.car, msg: can.Message.data):
         # gear
-        print('parsed packet id 361')
-        pass
+        return
 
     def _360(car:car.car, msg: can.Message.data):
         # coolant temp
@@ -103,61 +94,46 @@ class commandDict:
         # cruise on off
         # cruise set
         # cruise speed
-        print('parsed packet id 360')
-        pass
+        return
 
     def _372(car:car.car, msg: can.Message.data):
-        print('parsed packet id 372')
-        pass
+        return
 
     def _63B(car:car.car, msg: can.Message.data):
-        print('parsed packet id 63B')
-        pass
+        return
 
     def _442(car:car.car, msg: can.Message.data):
-        print('parsed packet id 442')
-        pass
+        return
 
     def _375(car:car.car, msg: can.Message.data):
-        print('parsed packet id 375')
-        pass
+        return
 
     def _374(car:car.car, msg: can.Message.data):
-        print('parsed packet id 374')
-        pass
+        return
 
     def _4C8(car:car.car, msg: can.Message.data):
-        print('parsed packet id 4C8')
-        pass
+        return
 
     def _6E1(car:car.car, msg: can.Message.data):
-        print('parsed packet id 6E1')
-        pass
+        return
 
     def _6E2(car:car.car, msg: can.Message.data):
-        print('parsed packet id 6E2')
-        pass
+        return
 
     def _4DD(car:car.car, msg: can.Message.data):
-        print('parsed packet id 4DD')
-        pass
+        return
 
     def _4C3(car:car.car, msg: can.Message.data):
-        print('parsed packet id 4C3')
-        pass
+        return
 
     def _4C1(car:car.car, msg: can.Message.data):
-        print('parsed packet id 4C1')
-        pass
+        return
 
     def _4C6(car:car.car, msg: can.Message.data):
-        print('parsed packet id 4C6')
-        pass
+        return
 
     def unknown(car:car.car, msg: can.Message.data):
-        print()
-        pass
-    
+        return
     
     commands = {
         324: _144,  322: _142,  321: _141,  320: _140,  342: _156,  338: _152,
