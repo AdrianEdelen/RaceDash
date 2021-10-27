@@ -46,33 +46,49 @@ class packetProcessor:
     def getByteA(data: bytearray):
         if data.__len__ > 0:
             return data[0]
+        else:
+            return 0
         
     def getByteB(data: bytearray):
         if data.__len__ > 1:
             return data[1]
+        else:
+            return 0
         
     def getByteC(data: bytearray):
         if data.__len__ > 2:
             return data[2]
+        else:
+            return 0
         
     def getByteD(data: bytearray):
         if data.__len__ > 3:
             return data[3]
+        else:
+            return 0
         
     def getByteE(data: bytearray):
         if data.__len__ > 4:
             return data[4]
+        else:
+            return 0
         
     def getByteF(data: bytearray):
         if data.__len__ > 5:
             return data[5]
+        else:
+            return 0
         
     def getByteG(data: bytearray):
         if data.__len__ > 6:
             return data[6]
+        else:
+            return 0
         
     def getByteH(data: bytearray):
         if data.__len__ > 7:
             return data[7]
+        else:
+            return 0
         
     
