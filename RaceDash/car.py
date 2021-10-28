@@ -34,6 +34,8 @@ class car:
         self.cruise_speed = 0
         self.gear_two = 0
         self.speed = 0
+        
+        #unidentified values
         self._321 = 0
         self._322 = 0
         self._324 = 0
@@ -56,9 +58,6 @@ class car:
         self._1245 = 0
         self._1761 = 0
         self._1762 = 0
-
-        #unidentified values
-        
 
     def __str__(self) -> str:
         return f'''\
@@ -87,12 +86,14 @@ gear 2...............: {self.gear_two}| speed: {self.speed}
 1222.................: {self._1222} |1224.................: {self._1224}
 1245.................: {self._1245} |1761.................: {self._1761}
 1762.................: {self._1762}
+
+Packets Behind: {self.canBus.Queue.unfinished_tasks}
 '''
-        
-    #as i get more comfortable with threading
-    #the goal here is to start thread to process the packet and then kill it,
-    #ideally, this means that we don't have to block or get behind on a particularly difficult
-    #calculation
+    #we want to block here to honor the order of the can bus
+    #however, we may add a timeout at some point to drop a message
+    #probably just exit the calc if a new packet comes in
+    #on the other side, we may be able to catch up on easy to process packets
+    #so it may be best to drop a packet if the q is greater than n packets
     def startProcessorThread(self):
         self.workerProc = threading.Thread(target=self.calcCanMessage, args=())
         self.workerProc.setDaemon(False)
