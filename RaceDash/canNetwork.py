@@ -7,16 +7,15 @@ import can
 from can.bus import BusState
 from can.interface import Bus
 from sys import platform
-
-from packetProcessor import packetProcessor
-
-
+import re
+from textwrap import wrap
 
 """
 The can network operates by starting a thread and then queue all of 
 the messages on the network the software can then process the messages 
-as it sees fit the canSim behaves exactly the same as the real and 
-and can be used to simulate with dummy data or play back real world logs
+as it sees fit.
+CanCommunication = real life can feed
+CanSimCanUtils = for reading can-utils logs
 """
 #in the future I intend to add timestamp checking to play back messages in real time
 class canNetworkInterface:
@@ -94,11 +93,8 @@ class canCommunication(canNetworkInterface):
 
         pass
 
-
-#This implementation is outdated, it is based on the string that can-utils logs
-#we will be making our own logs that is conducive to our style
-#Deprecated
-class simCanCommOld(canNetworkInterface):
+#When loading can-utils log files use this
+class simCanCanUtils(canNetworkInterface):
     def __init__(self) -> None:
         super().__init__()
         self.pos = 0
@@ -132,22 +128,28 @@ class simCanCommOld(canNetworkInterface):
                 curPacket = self.lines[self.pos]
                 self.pos += 1
             except IndexError:
+                print('new loop')
                 self.pos = 0
                 curPacket = self.lines[self.pos]
                 self.pos += 1
             finally:
-                pckt = packetProcessor.process_packet_string(curPacket)
+                packetParts = curPacket.split()
+                idAndMessage = packetParts[2].split('#')
+
+                dataBackwards = idAndMessage[1].zfill(16)
+                byteList = wrap(dataBackwards, 2)
+
+                data = []
+                for b in byteList:
+                    data.append(int(b,16))
+                
                 msg = can.Message()
-                msg.arbitration_id = pckt.id
-                msg.data = pckt.data
-                msg.channel = pckt.device
-                msg.timestamp = pckt.timeStamp
+                msg.arbitration_id = int(idAndMessage[0], 16)
+                msg.data = data
+                msg.channel = packetParts[1]
+                msg.timestamp = float(re.sub(r'[\(\)]', '', packetParts[0]))
                 self.Queue.put(msg)
                 
 
     def sendMessage(self):
         pass
-
-    
-    
-        
