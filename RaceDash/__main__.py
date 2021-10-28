@@ -35,11 +35,11 @@ def main():
         #if the queue grows beynd n number of messages
 
 
-        # while True:
-        #     time.sleep(.016)
-        #     os.system('cls' if os.name == 'nt' else 'clear')
-        #     print(curCar)
-        #     print('packets behind: ', curCar.canBus.Queue.unfinished_tasks)
+        while True:
+            time.sleep(.016)
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print(curCar)
+            print('packets behind: ', curCar.canBus.Queue.unfinished_tasks)
 
 
     except KeyboardInterrupt:
