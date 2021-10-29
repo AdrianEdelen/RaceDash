@@ -1,63 +1,68 @@
 from can.message import Message
+from flask_restful import Resource
 from canNetwork import *
 from packetCommand import commandDict
-from pykson import JsonObject, IntegerField, StringField, ObjectListField
 
-class car:
+import json
+
+class car(Resource):
+    
     def __init__(self, canBus: canNetworkInterface) -> None:
         self.canBus = canBus
-
         #identified values
-        self.accelerator_position_percent = IntegerField(serialized_name="Current Accelerator Position")
-        self.brake_position_percent = IntegerField(0)
-        self.steering_angle_one = IntegerField(0)
-        self.speed_mph = IntegerField(0)
-        self.engine_rpm = IntegerField(0)
-        self.coolant_temp = IntegerField(0)
-        self.engine_oil_temp = IntegerField(0)
-        self.brake_pressure = IntegerField(0)
-        self.clutch_position = IntegerField(0)
-        self.gear_one = IntegerField(0)
-        self.throttle_position = IntegerField(0)
-        self.lateral_accel = IntegerField(0)
-        self.long_accel = IntegerField(0)
-        self.combined_accel = IntegerField(0)
-        self.yaw_rate = IntegerField(0)
-        self.wheel_speed_FL = IntegerField(0)
-        self.wheel_speed_FR = IntegerField(0)
-        self.wheel_speed_RL = IntegerField(0)
-        self.wheel_speed_RR = IntegerField(0)
-        self.steering_angle_two = IntegerField(0)
-        self.accel_pedal_on_off = IntegerField(0)
-        self.cruise_control_on_off = IntegerField(0)
-        self.cruise_control_set = IntegerField(0)
-        self.cruise_speed = IntegerField(0)
-        self.gear_two = IntegerField(0)
-        self.speed = IntegerField(0)
+        self.accelerator_position_percent = 0
+        self.brake_position_percent = 0
+        self.steering_angle_one = 0
+        self.speed_mph = 0
+        self.engine_rpm = 0
+        self.coolant_temp = 0
+        self.engine_oil_temp = 0
+        self.brake_pressure = 0
+        self.clutch_position = 0
+        self.gear_one = 0
+        self.throttle_position = 0
+        self.lateral_accel = 0
+        self.long_accel = 0
+        self.combined_accel = 0
+        self.yaw_rate = 0
+        self.wheel_speed_FL = 0
+        self.wheel_speed_FR = 0
+        self.wheel_speed_RL = 0
+        self.wheel_speed_RR = 0
+        self.steering_angle_two = 0
+        self.accel_pedal_on_off = 0
+        self.cruise_control_on_off = 0
+        self.cruise_control_set = 0
+        self.cruise_speed = 0
+        self.gear_two = 0
+        self.speed = 0
         
         #unidentified values
-        self._321 = IntegerField(0)
-        self._322 = IntegerField(0)
-        self._324 = IntegerField(0)
-        self._342 = IntegerField(0)
-        self._642 = IntegerField(0)
-        self._864 = IntegerField(0)
-        self._865 = IntegerField(0)
-        self._880 = IntegerField(0)
-        self._882 = IntegerField(0)
-        self._884 = IntegerField(0)
-        self._885 = IntegerField(0)
-        self._885 = IntegerField(0)
-        self._1088 = IntegerField(0)
-        self._1090 = IntegerField(0)
-        self._1595 = IntegerField(0)
-        self._1217 = IntegerField(0)
-        self._1219 = IntegerField(0)
-        self._1222 = IntegerField(0)
-        self._1224 = IntegerField(0)
-        self._1245 = IntegerField(0)
-        self._1761 = IntegerField(0)
-        self._1762 = IntegerField(0)
+        self._321 = 0
+        self._322 = 0
+        self._324 = 0
+        self._342 = 0
+        self._642 = 0
+        self._864 = 0
+        self._865 = 0
+        self._880 = 0
+        self._882 = 0
+        self._884 = 0
+        self._885 = 0
+        self._885 = 0
+        self._1088 = 0
+        self._1090 = 0
+        self._1595 = 0
+        self._1217 = 0
+        self._1219 = 0
+        self._1222 = 0
+        self._1224 = 0
+        self._1245 = 0
+        self._1761 = 0
+        self._1762 = 0
+
+    def ToJson(self):
+        return json.dumps(self.__dict__, indent=4, sort_keys=True, default=str)
 
     def __str__(self) -> str:
         return f'''\
@@ -119,8 +124,17 @@ Packets Behind: {self.canBus.Queue.unfinished_tasks}
                 print('Unknown Packet Id: ', msgId)
             self.canBus.Queue.task_done()
 
+    #logging the car state should not be json, it can just be a bytestream that can be read from file for playbacks, split every x
+    #messages and can be pieced back together adn replayed.
+
+    #the api should report car state in json though
+    #this way the front end can poll as often as it wants
+
+    def get(self):
+        return self.ToJson(), 200
 
 
+    
 
         
 
