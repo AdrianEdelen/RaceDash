@@ -1,6 +1,6 @@
+from pykson import Pykson
 from car import *
 import canNetwork
-import json
 """
 The current main menu, basic TTY display that should really only be used for debugging
 """
@@ -33,7 +33,7 @@ def main():
     try:
         while True:
             os.system('cls' if os.name == 'nt' else 'clear')
-            print(curCar.toJson())
+            print(Pykson().to_json(curCar))
     except KeyboardInterrupt:
         print('Shutting Down')
         curCar.dispose()
