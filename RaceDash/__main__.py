@@ -1,7 +1,8 @@
 from car import *
 import canNetwork
+import json
 """
-The current main menu, basic display if toggled on
+The current main menu, basic TTY display that should really only be used for debugging
 """
 def main():
     print('*******************Main Menu*******************')
@@ -32,7 +33,7 @@ def main():
     try:
         while True:
             os.system('cls' if os.name == 'nt' else 'clear')
-            print(curCar)
+            print(curCar.toJson())
     except KeyboardInterrupt:
         print('Shutting Down')
         curCar.dispose()

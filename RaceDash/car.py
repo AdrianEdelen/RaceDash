@@ -59,6 +59,9 @@ class car:
         self._1761 = 0
         self._1762 = 0
 
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
+
     def __str__(self) -> str:
         return f'''\
 *************************************************************************************
