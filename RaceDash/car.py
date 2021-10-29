@@ -5,7 +5,7 @@ from packetCommand import commandDict
 
 import json
 
-class car(Resource):
+class car():
     
     def __init__(self, canBus: canNetworkInterface) -> None:
         self.canBus = canBus
@@ -61,8 +61,6 @@ class car(Resource):
         self._1761 = 0
         self._1762 = 0
 
-    def ToJson(self):
-        return json.dumps(self.__dict__, indent=4, sort_keys=True, default=str)
 
     def __str__(self) -> str:
         return f'''\
@@ -129,6 +127,13 @@ Packets Behind: {self.canBus.Queue.unfinished_tasks}
 
     #the api should report car state in json though
     #this way the front end can poll as often as it wants
+
+class carApi(Resource):
+    def __init__(self, car) -> None:
+        self.car = car
+
+    def ToJson(self):
+        return json.dumps(self.car.__dict__, indent=4, sort_keys=True, default=str)
 
     def get(self):
         return self.ToJson(), 200

@@ -40,25 +40,14 @@ def main():
 
         
         #start api server
-        api.add_resource(car(), '/Car')
+        api.add_resource(carApi, '/Car',
+                 resource_class_kwargs={'car': curCar})
         if __name__ == '__main__':
             app.run()
 
-    except:
+    except Exception as e:
+        print(e)
         print("Unable to establish connection. Shutting down")
         curCar.dispose()
-    
-    # try:
-    #     while True:
-    #         a = curCar.get()
-
-            
-    #         #os.system('cls' if os.name == 'nt' else 'clear')
-    #         #print(curCar)
-    #         #exit()
-    # except KeyboardInterrupt:
-    #     print('Shutting Down')
-    #     curCar.dispose()
-    #   # run our Flask app
-    
+        
 main()
