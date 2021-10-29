@@ -93,10 +93,8 @@ gear 2...............: {self.gear_two}| speed: {self.speed}
 Packets Behind: {self.canBus.Queue.unfinished_tasks}
 '''
     #we want to block here to honor the order of the can bus
-    #however, we may add a timeout at some point to drop a message
-    #probably just exit the calc if a new packet comes in
-    #on the other side, we may be able to catch up on easy to process packets
-    #so it may be best to drop a packet if the q is greater than n packets
+    #At some point however, we want to add functionality to 
+    #start dropping packets if we get behind n number of packets in the queue
     def startProcessorThread(self):
         self.workerProc = threading.Thread(target=self.calcCanMessage, args=())
         self.workerProc.setDaemon(False)
@@ -122,12 +120,10 @@ Packets Behind: {self.canBus.Queue.unfinished_tasks}
                 print('Unknown Packet Id: ', msgId)
             self.canBus.Queue.task_done()
 
-    #logging the car state should not be json, it can just be a bytestream that can be read from file for playbacks, split every x
-    #messages and can be pieced back together adn replayed.
 
-    #the api should report car state in json though
-    #this way the front end can poll as often as it wants
-
+    #The post for the car should be commands that we want to perform
+    #such as turn off or something.
+    #this way 
 class carApi(Resource):
     def __init__(self, car) -> None:
         self.car = car
