@@ -3,6 +3,12 @@
     # I AM PRETTY MUCH STILL AT THE EXPERIMENTATION STAGE
     # DO NOT JUDGE THIS CODE
 
+
+So i think it would be a good idea to have a way to deserialize can translations, that way if someone reverse
+engineered their cars can bus, they could drop in the file and a cmd dict could possibly be built out of the file
+
+this makes the software widely extensible since now anyone can drop in can definitions for their cars
+
     # data processing
     # recieve a message
     # pop into queue
