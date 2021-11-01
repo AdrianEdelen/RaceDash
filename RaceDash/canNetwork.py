@@ -43,7 +43,9 @@ class canNetworkInterface:
     def sendMessage():
         pass
 
+
 class canCommunication(canNetworkInterface):
+
     def __init__(self) -> None:
         super().__init__()
         self.bus = None
@@ -92,7 +94,6 @@ class canCommunication(canNetworkInterface):
     def sendMessage(self):
 
         pass
-
 #When loading can-utils log files use this
 class simCanCanUtils(canNetworkInterface):
     def __init__(self) -> None:
