@@ -8,7 +8,7 @@ import can
 
 
 class CanLogger:
-    def __init__(self,canQueue, useDB, useFile, useStream, cmds) -> None:
+    def __init__(self,canQueue: queue.Queue, useDB, useFile, useStream, cmds) -> None:
         self.canBusQueue = canQueue
         self.useDB = useDB
         self.useFile = useFile
@@ -41,7 +41,7 @@ class CanLogger:
 
     def calcCanMessage(self):
         while True:
-            if self.canBusQueue.unfinishedTasks() > 100:
+            if self.canBusQueue.unfinished_tasks > 100:
                 #self.canBusQueue.clear --- not sure what the method is here
                 continue
             msg:can.Message = self.canBusQueue.get(True)
