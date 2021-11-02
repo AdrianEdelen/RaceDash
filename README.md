@@ -10,7 +10,7 @@ Currently the only supported platform is FT86. Due to the nature of automotive m
 we do not always have the luxury of using the standardized message IDs. Therefore additional platforms will require large amounts of reverse engineering to determine 
 the contents of each message.
 
-The benefit of using the direct can-bus over OBD-II, is speed and access. RaceDash has direct access to many internal systems and is not limited by the arbitrary rate limits 
+The benefit of using the direct can-bus vs OBD-II, is speed and access. RaceDash has direct access to many internal systems and is not limited by the arbitrary rate limits 
 set by OBD-II testers.
 
 Another primary goal of RaceDash is to allow alternate control of your vehicle, did you remove the door cards but still want to roll your window down?
