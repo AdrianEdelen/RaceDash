@@ -1,6 +1,10 @@
 
 """
-The canlogger spits out the processed data
+CanLogger works through messages in the queue. these messages can come from the bus or anywhere
+The logger translates the messages and returns them in a Message data type
+
+After processing, the messages are either sent out on a stream(TBD), written to file, sent to a db,
+or any combination of these.
 """
 import queue
 import threading
@@ -39,7 +43,6 @@ class CanLogger:
         #open stream.
         #this would be used for a front end on the same device
         pass
-
 
     def calcCanMessage(self):
         while True:

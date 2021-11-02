@@ -11,17 +11,13 @@ import re
 from textwrap import wrap
 
 """
-The can network operates by starting a thread and then queue all of 
-the messages on the network the software can then process the messages 
-as it sees fit.
-CanCommunication = real life can feed
-CanSimCanUtils = for reading can-utils logs
+The CanNetwork pulls messages off of the bus (or simfile) and puts them into a queue for processing.
 """
 #in the future I intend to add timestamp checking to play back messages in real time
 class canNetworkInterface:
 
-    def __init__(self) -> None:
-        self.Queue = queue.Queue()
+    def __init__(self, queue:queue.Queue) -> None:
+        self.Queue = queue
     
 
     @abstractmethod
@@ -43,11 +39,10 @@ class canNetworkInterface:
     def sendMessage():
         pass
 
-
 class canCommunication(canNetworkInterface):
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self,queue) -> None:
+        super().__init__(queue)
         self.bus = None
 
     def startConnection(self):
@@ -96,8 +91,8 @@ class canCommunication(canNetworkInterface):
         pass
 #When loading can-utils log files use this
 class simCanCanUtils(canNetworkInterface):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self,queue) -> None:
+        super().__init__(queue)
         self.pos = 0
         self.lines = ''
         self.worker = None

@@ -1,12 +1,9 @@
 from flask_restful import Resource
 import json
-
-
-#time recieved should propably be a datetime of some type
-#instead of keeping state of the car, we will process a packet and 
-#split it into as many messages as needed,
-#and then create this message object with it
-#
+"""
+Message is a single translated piece of data from the can bus
+E.G. time|speed|45
+"""
 class Message(Resource):
     def __init__(self, timeRecieved: float, name: str, magnitude: str) -> None:
         self.timeRecieved = round(timeRecieved,3)

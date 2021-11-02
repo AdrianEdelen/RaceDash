@@ -1,4 +1,5 @@
 import os
+import queue
 import canLogger
 import canNetwork
 import commandDict
@@ -8,11 +9,16 @@ import ast
 import configparser
 
 """
-The current main menu, will run in a tight loop to keep the app running
+The main method loads configurations, and starts the threads for parsing packets off of the bus
 """
 def main():
     try:
-    #setup api stuff
+        #create packet Queue
+        packetQueue = queue.Queue()
+
+        #setup api stuff
+        
+
         app = Flask(__name__)
         api = Api(app)
     
@@ -21,11 +27,13 @@ def main():
         Config.read('RaceDash\config.ini')
 
         if Config.getboolean('Config', 'SpoofData'):
-            bus = canNetwork.simCanCanUtils()
+            bus = canNetwork.simCanCanUtils(packetQueue)
         else:
-            bus = canNetwork.canCommunication()
+            bus = canNetwork.canCommunication(packetQueue)
 
-        recorder = canLogger.CanLogger(bus.Queue, 
+        
+
+        recorder = canLogger.CanLogger(packetQueue, 
         Config.getboolean('Config', 'UseDatabase'), 
         Config.getboolean('Config', 'UseFile'),
         Config.getboolean('Config', 'UseStream'), 
