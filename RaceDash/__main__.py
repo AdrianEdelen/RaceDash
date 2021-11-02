@@ -5,7 +5,6 @@ import canNetwork
 import commandDict
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
-import ast
 import configparser
 
 """
@@ -30,8 +29,6 @@ def main():
             bus = canNetwork.simCanCanUtils(packetQueue)
         else:
             bus = canNetwork.canCommunication(packetQueue)
-
-        
 
         recorder = canLogger.CanLogger(packetQueue, 
         Config.getboolean('Config', 'UseDatabase'), 
