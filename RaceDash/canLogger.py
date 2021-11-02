@@ -6,7 +6,7 @@ import queue
 import threading
 import can
 import os
-
+import datetime
 
 class CanLogger:
     def __init__(self,canQueue: queue.Queue, useDB, useFile, useStream, cmds) -> None:
@@ -29,22 +29,9 @@ class CanLogger:
         #this will format for a db and send to db as configured
         pass
     def messageToFile(self, msg):
-        #this will write to files split by size
-        #these files will be local so try to save on space
-        #work = os.getcwd()
-        #work = work + '\\logs'
-        #os.chdir(work) #windows
-        #work = os.getcwd()
-        #get directory size
-        #if size greater than 
-        #delete oldest file (by name)
-        #filename is the date and hour (this will split the logs by the hour)
-        #check if file exists,
-        #if not create 
-        #write msg to string
-        #if file exists
-        #append message to string
-        a = True;
+        date = datetime.datetime.now()
+        logFile = open(f'logs\{date.strftime("%Y-%m-%d %H")}', 'a')
+        logFile.write(str(msg) + '\n')
         pass
     def messageToStream(self, msg):
         print(msg)
