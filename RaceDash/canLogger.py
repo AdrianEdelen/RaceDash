@@ -46,4 +46,3 @@ class CanLogger:
                 if self.useStream:
                     self.messageToStream(message)
             self.canBusQueue.task_done()
-            print(self.canBusQueue.unfinished_tasks)
