@@ -1,4 +1,5 @@
 RaceDash/__pycache__/
 tests/__pycache__/
 .venv/
-
+logs/
+.vscode/

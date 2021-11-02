@@ -18,6 +18,9 @@ class CanLogger:
         self.workerProc.start()
     def messageToDB(self, msg):
         #this will format for a db and send to db as configured
+        
+        
+
         pass
     def messageToFile(self, msg):
         date = datetime.datetime.now()

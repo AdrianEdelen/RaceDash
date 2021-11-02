@@ -39,6 +39,7 @@ def main():
         bus.startRecieveThread() #start listening for packets
         #it is important to start processing packets first, otherwise, you can build up a queue of messages
 
+
         #start api server
         #hold on this
         # api.add_resource(carApi, '/Car',
