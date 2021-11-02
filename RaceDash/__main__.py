@@ -13,12 +13,15 @@ The main method loads configurations, and starts the threads for parsing packets
 def main():
     try:
         #create packet Queue
+        print("Creating packet queue")
         packetQueue = queue.Queue()
 
+        print("setup API")
         #setup api stuff
         app = Flask(__name__)
         api = Api(app)
     
+        print("Loading config")
         #load config
         Config = configparser.ConfigParser()
         Config.read('RaceDash\config.ini')
@@ -28,12 +31,16 @@ def main():
         else:
             bus = canNetwork.canCommunication(packetQueue)
 
+        #start can logger
+        print("Starting can logger")
         recorder = canLogger.CanLogger(packetQueue, 
         Config.getboolean('Config', 'UseDatabase'), 
         Config.getboolean('Config', 'UseFile'),
         Config.getboolean('Config', 'UseStream'), 
         commandDict.commmandDict(Config.get('Config', 'Car')).car)
 
+        #start can network
+        print("Starting can network")
         bus.startConnection() #open the can bus connection
         recorder.startProcessorThread() #start processing packets
         bus.startRecieveThread() #start listening for packets
