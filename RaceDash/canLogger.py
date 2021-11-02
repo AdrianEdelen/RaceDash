@@ -5,6 +5,7 @@ The canlogger spits out the processed data
 import queue
 import threading
 import can
+import os
 
 
 class CanLogger:
@@ -24,14 +25,28 @@ class CanLogger:
     
     #probably need to pass in the parent q here. and pass the processed message into our q
     #that way the subclasses can all just pull from the q and 
-    def messageToDB(msg):
+    def messageToDB(self, msg):
         #this will format for a db and send to db as configured
         pass
-    def messageToFile(msg):
+    def messageToFile(self, msg):
         #this will write to files split by size
         #these files will be local so try to save on space
+        #work = os.getcwd()
+        #work = work + '\\logs'
+        #os.chdir(work) #windows
+        #work = os.getcwd()
+        #get directory size
+        #if size greater than 
+        #delete oldest file (by name)
+        #filename is the date and hour (this will split the logs by the hour)
+        #check if file exists,
+        #if not create 
+        #write msg to string
+        #if file exists
+        #append message to string
+        a = True;
         pass
-    def messageToStream(msg):
+    def messageToStream(self, msg):
         print(msg)
         #this will either be stdout, or some way for the os to just have an
         #open stream.
@@ -47,18 +62,21 @@ class CanLogger:
             msg:can.Message = self.canBusQueue.get(True)
             if msg.arbitration_id in self.cmds:
                 msgFunc = self.cmds[msg.arbitration_id]
-                msg = msgFunc(self, msg) #message come back as one or multiple values
+                processedMessage = msgFunc(msg) #message come back as one or multiple values
             else:
                 print('Unknown Packet Id: ', msg.arbitration_id)
             
-            if self.useDB:
-                self.messageToDB(msg)
-            if self.useFile:
-                self.messageToFile(msg)
-            if self.useStream:
-                self.messageToStream(msg)
+            for message in processedMessage:
+                #these can probably be done on seperate threads, need to be careful about conflicts though
+                if self.useDB:
+                    self.messageToDB(message)
+                if self.useFile:
+                    self.messageToFile(message)
+                if self.useStream:
+                    self.messageToStream(message)
 
             self.canBusQueue.task_done()
+            print(self.canBusQueue.unfinished_tasks)
 
     
 
