@@ -16,8 +16,6 @@ def main():
         packetQueue = queue.Queue()
 
         #setup api stuff
-        
-
         app = Flask(__name__)
         api = Api(app)
     
