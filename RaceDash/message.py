@@ -4,7 +4,7 @@ import json
 Message is a single translated piece of data from the can bus
 E.G. time|speed|45
 """
-class Message(Resource):
+class TranslatedMessage(Resource):
     def __init__(self, timeRecieved: float, name: str, magnitude: str) -> None:
         self.timeRecieved = round(timeRecieved,3)
         self.name = name

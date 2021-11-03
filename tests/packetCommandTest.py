@@ -1,8 +1,6 @@
 import unittest
 import can
 
-from RaceDash.packetCommand import commandDict
-
 class testPacketCommandMethods(unittest.TestCase):
 
     def setUp(self) -> None:
