@@ -12,28 +12,13 @@ The CanNetwork pulls messages off of the bus (or simfile) and puts them into a q
 class canNetworkInterface:
     def __init__(self, queue:queue.Queue) -> None:
         self.Queue = queue
-    @abstractmethod
-    def startConnection():
-        pass
-    @abstractmethod
-    def closeConnection():
-        pass
-    @abstractmethod
-    def startRecieveThread():
-        pass
-    @abstractmethod
-    def startSendThread():
-        pass
-    @abstractmethod
-    def recieveMessage():
-        pass
-    @abstractmethod
-    def sendMessage():
-        pass
+    
+
 class canCommunication(canNetworkInterface):
     def __init__(self,queue) -> None:
         super().__init__(queue)
         self.bus = None
+        
     def startConnection(self):
         os.system('sudo ip link set can0 type can bitrate 500000')
         os.system('sudo ifconfig can0 up')
