@@ -6,6 +6,7 @@ import commandDict
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 import configparser
+import dbBroker
 
 """
 The main method loads configurations, and starts the threads for parsing packets off of the bus
@@ -16,10 +17,9 @@ def main():
         print("Creating packet queue")
         packetQueue = queue.Queue()
 
-        print("setup API")
-        #setup api stuff
-        app = Flask(__name__)
-        api = Api(app)
+        #open DB Connection
+        #start api server
+        api = Api(dbBroker.Broker())
     
         print("Loading config")
         #load config
@@ -46,13 +46,6 @@ def main():
         bus.startRecieveThread() #start listening for packets
         #it is important to start processing packets first, otherwise, you can build up a queue of messages
 
-
-        #start api server
-        #hold on this
-        # api.add_resource(carApi, '/Car',
-        #          resource_class_kwargs={'car': curCar})
-        # if __name__ == '__main__':
-        #     app.run()
     except Exception as e:
         print(e)
         print("Unable to establish connection. Shutting down")

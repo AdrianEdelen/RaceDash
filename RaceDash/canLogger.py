@@ -6,7 +6,7 @@ After processing, the messages are either sent out on a stream(TBD), written to 
 or any combination of these."""
 import queue; import threading; import can; import datetime
 from can.message import Message; import psycopg2
-from message import TranslatedMessage
+from message import TranslatedMessage; import requests; import api
 class CanLogger:
     def __init__(self,canQueue: queue.Queue, useDB, useFile, useStream, cmds) -> None:
         self.canBusQueue = canQueue
@@ -14,7 +14,6 @@ class CanLogger:
         self.useFile = useFile
         self.useStream = useStream
         self.cmds = cmds
-
         #TODO: add a config file to set the db connection info
         if useDB:
             self.dbConn = psycopg2.connect(dbname='racedash', user='', password='', host='192.168.1.41')
@@ -49,15 +48,16 @@ class CanLogger:
             if msg.arbitration_id in self.cmds:
                 msgFunc = self.cmds[msg.arbitration_id]
                 processedMessage = msgFunc(msg) #message come back as one or multiple values
+                api.PutSingleFrame.put(processedMessage)
             else:
                 print('Unknown Packet Id: ', msg.arbitration_id)
-            for message in processedMessage:
-                if self.useDB:
-                    self.messageToDB(message)
-                if self.useFile:
-                    self.messageToFile(message)
-                if self.useStream:
-                    self.messageToStream(message)
+            # for message in processedMessage:
+            #     if self.useDB:
+            #         self.messageToDB(message)
+            #     if self.useFile:
+            #         self.messageToFile(message)
+            #     if self.useStream:
+            #         self.messageToStream(message)
             self.canBusQueue.task_done()
             if self.canBusQueue.unfinished_tasks != 0:
                 print(f"{datetime.datetime.now()}: unfinished tasks: {self.canBusQueue.unfinished_tasks}")
