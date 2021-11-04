@@ -7,9 +7,13 @@ namespace RaceDash.Models
         public string Name { get; set; }
         public double Magnitude { get; set; }
 
-        public Frame(Datetime timestamp,string name,double magnitude)
+        public strin Device { get; set; }
+
+        //TODO: change device to an enum
+        public Frame(Datetime timestamp, string device,string name,double magnitude)
         {
             Timestamp = timestamp;
+            Device = device;
             Name = name;
             Magnitude = magnitude;
         }
