@@ -35,7 +35,7 @@ namespace RaceDash.CarData
 
         }
 
-        Dictionary<string, Function<canMessage, Frame>> commandDict = 
+        Dictionary<string, Function<string, Frame>> commandDict = 
         {
             
         }; 

@@ -1,16 +1,17 @@
-
+using System.Collections.Generic;
+using RaceDash.Models;
 namespace RaceDash.CanNetwork
 {
-    interface ICanNetwork
+    public interface ICanNetwork
     {
-        public Queue Queue { get; set; }
+        
 
-        public StartConnection();
-        public CloseConnection();
-        public StartReceiveThread();
-        public startSendThread();
-        public receiveMessage();
-        public SendMessage();
+        public void StartConnection();
+        public void CloseConnection();
+        public void StartReceiveThread();
+        public void startSendThread();
+        public void receiveMessage();
+        public void SendMessage();
         
 
     }

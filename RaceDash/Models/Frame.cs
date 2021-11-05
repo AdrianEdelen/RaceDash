@@ -1,3 +1,4 @@
+using System;
 
 namespace RaceDash.Models 
 {
@@ -7,7 +8,7 @@ namespace RaceDash.Models
         public string Name { get; set; }
         public double Magnitude { get; set; }
 
-        public strin Device { get; set; }
+        public string Device { get; set; }
 
         //TODO: change device to an enum
         public Frame(Datetime timestamp, string device,string name,double magnitude)

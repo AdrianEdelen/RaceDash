@@ -1,35 +1,36 @@
-
+using RaceDash.Models;
+using System.Collections.Generic;
 
 namespace RaceDash.CanNetwork
 {
     class CanCommunication : ICanNetwork
     {
-        public Queue Queue { get; set; }
-        public CanConnection()
+        public Queue<Frame> Queue { get; set; }
+        public void CanConnection()
         {
             
         }
-        public StartConnection() 
+        public void StartConnection() 
         {
             throw new NotImplementedException();
         }
-        public CloseConnection()
+        public void CloseConnection()
         {
             throw new NotImplementedException();
         }
-        public StartReceiveThread()
+        public void StartReceiveThread()
         {
             throw new NotImplementedException();
         }
-        public startSendThread()
+        public void startSendThread()
         {
             throw new NotImplementedException();
         }
-        public receiveMessage()
+        public void receiveMessage()
         {
             throw new NotImplementedException();
         }
-        public SendMessage() 
+        public void SendMessage() 
         {
             throw new NotImplementedException();
         }

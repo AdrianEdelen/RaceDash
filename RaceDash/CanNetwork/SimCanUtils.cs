@@ -1,7 +1,9 @@
 using System;
 using RaceDash.Models;
 using System.Text.RegularExpressions;
-using System.DateTime;
+using System.Collections.Generic;
+
+
 namespace RaceDash.CanNetwork
 {
     /// <summary>
@@ -18,12 +20,12 @@ namespace RaceDash.CanNetwork
         private List<string> _lines;
         public bool IsConnected { get; private set; }
 
-        public SimCanUtils(Queue queue)
+        public SimCanUtils(Queue<Frame> queue)
         {
             Queue = queue;
             IsConnected = false;
         }
-        public StartConnection()
+        public void StartConnection()
         {
             using (System.IO.FileStream = new  System.IO.FileStream(_filePath, FileMode.Open))
             {
@@ -39,19 +41,19 @@ namespace RaceDash.CanNetwork
             }
         }
         
-        public CloseConnection()
+        public void CloseConnection()
         {
             IsConnected = false;
         }
-        public StartReceiveThread()
+        public void StartReceiveThread()
         {
             Task.Run(() => { while (IsConnected) receiveMessage();});
         }
-        public startSendThread()
+        public void startSendThread()
         {   
             throw new NotImplementedException();
         }
-        public receiveMessage()
+        public void receiveMessage()
         {
             //This so so complex because of the way can-utils creates logs
             //It is a mess
