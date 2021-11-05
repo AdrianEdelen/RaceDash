@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using RaceDash.CanNetwork;
 using RaceDash.Models;
 
