@@ -4,23 +4,49 @@ The logger translates the messages and returns them in a Message data type
 
 After processing, the messages are either sent out on a stream(TBD), written to file, sent to a db,
 or any combination of these."""
-import queue; import threading; import can; import datetime
-from can.message import Message; import psycopg2
-from message import TranslatedMessage; import requests; import api
+import queue
+import threading
+import can
+import datetime
+from can.message import Message
+import psycopg2
+from RaceDash.commandDict import commmandDict
+from message import TranslatedMessage
+import requests
+import api
+import configparser
+
 class CanLogger:
-    def __init__(self,canQueue: queue.Queue, useDB, useFile, useStream, cmds) -> None:
+    def __init__(self,canQueue: queue.Queue) -> None:
         self.canBusQueue = canQueue
-        self.useDB = useDB
-        self.useFile = useFile
-        self.useStream = useStream
-        self.cmds = cmds
-        #TODO: add a config file to set the db connection info
-        if useDB:
-            self.dbConn = psycopg2.connect(dbname='racedash', user='admin', password='Add!ctive!@', host='192.168.1.41')
+
+        Config = configparser.ConfigParser()
+        Config.read('/home/pi/RaceDash/RaceDash/RaceDash/config.ini')
+        self.useDB = Config.getboolean('Config', 'UseDatabase'), 
+        self.useFile = Config.getboolean('Config', 'UseFile'),
+        self.useStream = Config.getboolean('Config', 'UseStream'), 
+        self.cmds = commmandDict.commmandDict(Config.get('Config', 'Car')).car
+        if self.useDB:
+            #prepare DB
+            dbName = Config.get('Database', 'DBName')
+            dbUser = Config.get('Database', 'DBUser')
+            dbPass = Config.get('Database', 'DBPass')
+            dbHost = Config.get('Database', 'DBHost')
+
+            self.dbConn = psycopg2.connect(dbname=dbName, user=dbUser, password=dbPass, host=dbHost)
             self.dbCursor = self.dbConn.cursor()
             self.dbCursor.execute("SELECT version()")
-            print(self.dbCursor.fetchone())
+            if self.dbCursor.fetchone()[0] == any:
+                print("Database connected")
+            else:
+                print("Database not connected")
 
+        if self.useFile:
+            #prepare file
+            pass
+        if self.useStream:
+            #prepare stream
+            pass
 
     def startProcessorThread(self):
         self.workerProc = threading.Thread(target=self.calcCanMessage, args=())
@@ -35,8 +61,6 @@ class CanLogger:
         logFile.write(str(msg) + '\n')
     def messageToStream(self, msg):
         print(msg)
-
-
     def calcCanMessage(self):
         while True:
             #if self.canBusQueue.unfinished_tasks > 100:
@@ -49,18 +73,14 @@ class CanLogger:
                 msgFunc = self.cmds[msg.arbitration_id]
                 processedMessage = msgFunc(msg) #message come back as one or multiple values
                 #api.PutSingleFrame.put(processedMessage)
-                for msgSingle in processedMessage:
-                    if self.useDB:
-                        self.messageToDB(msgSingle)
-
-            else:
-                print('Unknown Packet Id: ', msg.arbitration_id)
-            # for message in processedMessage:
-            
-            #     if self.useFile:
-            #         self.messageToFile(message)
-            #     if self.useStream:
-            #         self.messageToStream(message)
+            else: #unknown packet
+                processedMessage = TranslatedMessage(msg.timestamp, msg.arbitration_id ,msg.data),
+            for msgSingle in processedMessage:
+                if self.useDB:
+                    self.messageToDB(msgSingle)
+                #TODO: push to ui
+                #TODO: push to file
+                #TODO: push to stream
             self.canBusQueue.task_done()
             if self.canBusQueue.unfinished_tasks != 0:
                 print(f"{datetime.datetime.now()}: unfinished tasks: {self.canBusQueue.unfinished_tasks}")

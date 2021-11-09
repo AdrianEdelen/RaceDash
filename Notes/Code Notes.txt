@@ -33,4 +33,9 @@ this makes the software widely extensible since now anyone can drop in can defin
     
     I will be adding back the command pattern from the if else. I figured out how to pass parameters to the dict functions
 
+    The DB seems to be the slowest part of this operation. so we need a way to either speed the db up
+    or we need a way to cache the db for processing while the car is not running
+    option one is preferred as it keeps the data as live as possible
+
+    ideally there is a datastream for local viewing and processing and then the DB for remote processing and processing after the fact
     

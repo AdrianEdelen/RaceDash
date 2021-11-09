@@ -10,20 +10,23 @@ The CanNetwork pulls messages off of the bus (or simfile) and puts them into a q
 """
 #in the future I intend to add timestamp checking to play back messages in real time
 class canNetworkInterface:
-    def __init__(self, queue:queue.Queue) -> None:
+    def __init__(self, queue:queue.Queue, device) -> None:
         self.Queue = queue
-    
+        self.Device = device
+    #TODO: Fix interface implementation
 
 class canCommunication(canNetworkInterface):
-    def __init__(self,queue) -> None:
-        super().__init__(queue)
+    def __init__(self,queue, device) -> None:
+        super().__init__(queue, device)
         self.bus: can.interface.Bus = None
-        
     def startConnection(self):
-        
+        #TODO: Properly set up multiple can devices (should be scalable)
         if platform == "linux" or platform == "linux2":
-            os.system('sudo ip link set can0 type can bitrate 500000')
-            os.system('sudo ifconfig can0 up')
+            #Configure can0 and can1
+            #TODO set buffer size
+            os.system(f'sudo ip link set {self.Device} type can bitrate 500000')
+            os.system(f'sudo ifconfig {self.Device} up')
+            #set them to up, if they are already up, the system will report device busy
         elif platform == "darwin":
             # OS X
             pass
@@ -31,8 +34,7 @@ class canCommunication(canNetworkInterface):
             # Windows...
             pass
         self.bus = can.interface.Bus(bustype='socketcan', channel='can0', bitrate=500000)
-        
-        #self.bus.state = BusState.ACTIVE
+        #self.bus.state = BusState.ACTIVE - This doesn't seem to need to be done
     def closeConnection(self):
         if platform == "linux" or platform == "linux2":
             os.system('sudo ifconfig can0 down')
@@ -52,15 +54,15 @@ class canCommunication(canNetworkInterface):
         self.workerSend.start()
     def recieveMessage(self) -> can.Message:
         while True:
-            msg = self.bus.recv()
-            
+            msg = self.bus.recv()          
             self.Queue.put(msg)
     def sendMessage(self):
         pass
+
 #When loading can-utils log files use this
 class simCanCanUtils(canNetworkInterface):
-    def __init__(self,queue) -> None:
-        super().__init__(queue)
+    def __init__(self,queue, device) -> None:
+        super().__init__(queue, device)
         self.pos = 0
         self.lines = ''
         self.worker = None

@@ -22,6 +22,31 @@ class api():
         if __name__ == '__main__':
             app.run()
 
+    def GetMostRecentByName():
+            #copilot
+            # parser = reqparse.RequestParser()
+            # parser.add_argument('name', type=str)
+            # args = parser.parse_args()
+            # return self.dbBroker.getMostRecentByName(args['name'])
+        pass
+
+    def GetMostRecent():
+        pass
+    def GetRangeByName():
+        pass
+    def GetAllByRange():
+        pass
+    def PutSingleFrame(self):
+        self.dbBroker.dbCursor.execute("INSERT INTO FRS (Timestamp, Name, Magnitude) VALUES (%s, %s, %s)", (msg.timeRecieved, msg.name, msg.magnitude))
+        self.dbBroker.dbConn.commit()
+        pass
+    def PutFrameGroup():
+        pass
+    def PutCommand():
+        pass
+    def GetAllByName():
+        pass
+
 class GetMostRecentByName(Resource):
     def get():
         #execute sql cmd
@@ -46,7 +71,9 @@ class GetLive(Resource):
         pass
 
 class PutSingleFrame(Resource):
-    def put():
+    def put(msg):
+        self.dbCursor.execute("INSERT INTO FRS (Timestamp, Name, Magnitude) VALUES (%s, %s, %s)", (msg.timeRecieved, msg.name, msg.magnitude))
+        self.dbConn.commit()
         pass
 
 class PutFrameGroup(Resource):
