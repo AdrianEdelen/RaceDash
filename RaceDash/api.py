@@ -1,14 +1,14 @@
-
+import json
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 
 class api():
-    def __init__(self) -> None:
+    def __init__(self, dbBroker) -> None:
         super().__init__()
         #start api server
         app = Flask(__name__)
         api = Api(app)
-
+        self.dbBroker = dbBroker
         api.add_resource(GetMostRecentByName, '/getmostrecentbyname')
             #resource_class_kwargs={'car': curCar})
         api.add_resource(GetMostRecent, '/getmostrecent')

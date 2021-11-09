@@ -2,7 +2,7 @@ import psycopg2
 
 class Broker:
     def __init__(self) -> None:
-        self.dbConn = psycopg2.connect(dbname='racedash', user='', password='', host='192.168.1.41')
+        self.dbConn = psycopg2.connect(dbname='racedash', user='admin', password='Add!ctive!@', host='192.168.1.41')
         self.dbCursor = self.dbConn.cursor()
         self.dbCursor.execute("SELECT version()")
         print(self.dbCursor.fetchone())

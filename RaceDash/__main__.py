@@ -4,9 +4,11 @@ import canLogger
 import canNetwork
 import commandDict
 from flask import Flask
-from flask_restful import Resource, Api, reqparse
+from flask_restful import Resource, reqparse
 import configparser
 import dbBroker
+import api
+
 
 """
 The main method loads configurations, and starts the threads for parsing packets off of the bus
@@ -19,13 +21,14 @@ def main():
 
         #open DB Connection
         #start api server
-        api = Api(dbBroker.Broker())
+        lApi = api.api(dbBroker.Broker())
     
         print("Loading config")
         #load config
         Config = configparser.ConfigParser()
-        Config.read('RaceDash\config.ini')
-
+        Config.read('/home/pi/RaceDash/RaceDash/RaceDash/config.ini')
+        print(os.getcwd())
+        print(Config.sections())
         if Config.getboolean('Config', 'SpoofData'):
             bus = canNetwork.simCanCanUtils(packetQueue)
         else:

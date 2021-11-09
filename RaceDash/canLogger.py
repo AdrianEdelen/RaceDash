@@ -16,7 +16,7 @@ class CanLogger:
         self.cmds = cmds
         #TODO: add a config file to set the db connection info
         if useDB:
-            self.dbConn = psycopg2.connect(dbname='racedash', user='', password='', host='192.168.1.41')
+            self.dbConn = psycopg2.connect(dbname='racedash', user='admin', password='Add!ctive!@', host='192.168.1.41')
             self.dbCursor = self.dbConn.cursor()
             self.dbCursor.execute("SELECT version()")
             print(self.dbCursor.fetchone())
@@ -39,21 +39,24 @@ class CanLogger:
 
     def calcCanMessage(self):
         while True:
-            if self.canBusQueue.unfinished_tasks > 100:
+            #if self.canBusQueue.unfinished_tasks > 100:
                 #not sure if we need to clear the queue out, in theory we could get stuck in a lag state
                 #that may be better since we would just wait after the car shuts down and the queue
                 #slows down to process the data. better late than never
-                continue
+                #continue
             msg:can.Message = self.canBusQueue.get(True)
             if msg.arbitration_id in self.cmds:
                 msgFunc = self.cmds[msg.arbitration_id]
                 processedMessage = msgFunc(msg) #message come back as one or multiple values
-                api.PutSingleFrame.put(processedMessage)
+                #api.PutSingleFrame.put(processedMessage)
+                for msgSingle in processedMessage:
+                    if self.useDB:
+                        self.messageToDB(msgSingle)
+
             else:
                 print('Unknown Packet Id: ', msg.arbitration_id)
             # for message in processedMessage:
-            #     if self.useDB:
-            #         self.messageToDB(message)
+            
             #     if self.useFile:
             #         self.messageToFile(message)
             #     if self.useStream:

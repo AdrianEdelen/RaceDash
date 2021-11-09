@@ -17,11 +17,10 @@ class canNetworkInterface:
 class canCommunication(canNetworkInterface):
     def __init__(self,queue) -> None:
         super().__init__(queue)
-        self.bus = None
+        self.bus: can.interface.Bus = None
         
     def startConnection(self):
-        os.system('sudo ip link set can0 type can bitrate 500000')
-        os.system('sudo ifconfig can0 up')
+        
         if platform == "linux" or platform == "linux2":
             os.system('sudo ip link set can0 type can bitrate 500000')
             os.system('sudo ifconfig can0 up')
@@ -32,7 +31,8 @@ class canCommunication(canNetworkInterface):
             # Windows...
             pass
         self.bus = can.interface.Bus(bustype='socketcan', channel='can0', bitrate=500000)
-        self.bus.state = BusState.ACTIVE
+        
+        #self.bus.state = BusState.ACTIVE
     def closeConnection(self):
         if platform == "linux" or platform == "linux2":
             os.system('sudo ifconfig can0 down')
@@ -52,7 +52,8 @@ class canCommunication(canNetworkInterface):
         self.workerSend.start()
     def recieveMessage(self) -> can.Message:
         while True:
-            msg = can.Message(self.bus.recv())
+            msg = self.bus.recv()
+            
             self.Queue.put(msg)
     def sendMessage(self):
         pass
