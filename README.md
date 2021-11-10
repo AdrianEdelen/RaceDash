@@ -34,4 +34,4 @@ DBPass: admin\
 DBHost: localhost\
 [CanNetwork]\
 
-RaceDash Processing Module requires a cardware can-bus connection to your car. if you are uncomfortable with soldering, working with voltages, or electronics, there are plenty of devices that you can connect to the car in various locations (including the obd port). the device just needs to use socketCAN on linux to work with RPM
+RaceDash Processing Module requires a hardware can-bus connection to your car. if you are uncomfortable with soldering, working with voltages, or electronics, there are plenty of devices that you can connect to the car in various locations (including the obd port). the device just needs to use socketCAN on linux to work with RPM
