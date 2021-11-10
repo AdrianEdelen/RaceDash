@@ -4,6 +4,7 @@ from flask_restful import Resource, Api, reqparse
 import dbBroker
 
 class api():
+    
     def __init__(self, dbBroker: dbBroker.Broker) -> None:
         super().__init__()
         #start api server
@@ -33,21 +34,28 @@ class api():
 
     def GetMostRecent():
         pass
+    
     def GetRangeByName():
         pass
+    
     def GetAllByRange():
         pass
+    
     def PutSingleFrame(self, frame):
         self.dbBroker.insert()
         pass
+    
     def PutFrameGroup():
         pass
+    
     def PutCommand():
         pass
+    
     def GetAllByName():
         pass
 
 class GetMostRecentByName(Resource):
+    
     def get():
         #execute sql cmd
         #take entry from db and conv to json
@@ -55,42 +63,52 @@ class GetMostRecentByName(Resource):
         pass
 
 class GetMostRecent(Resource):
+    
     def get():
         pass
 
 class GetRangeByName(Resource):
+    
     def get():
         pass
 
 class GetAllByRange(Resource):
+    
     def get():
         pass
 
 class GetLive(Resource):
+    
     def get():
         pass
 
 class PutSingleFrame(Resource):
+    
     def put():
         pass
 
 class PutFrameGroup(Resource):
+    
     def put():
         pass
 
 class PutCommand(Resource):
+    
     def put():
         pass
 
 class GetAllByName(Resource):
+    
     def get():
         pass
 
 #this is just here for example
 class carApi(Resource):
+    
     def __init__(self, car) -> None:
         self.car = car
 
+    
     def ToJson(self):
         return json.dumps(self.car.__dict__, indent=4, sort_keys=True, default=str)
 

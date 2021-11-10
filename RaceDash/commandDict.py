@@ -46,19 +46,23 @@ class FRSCommands:
         brake_pressure = TranslatedMessage(msg.timestamp,'Brake Pressure',min(msg.data[2] / 0.7, 100))
 
         return speed, brake_pressure
+    
     def _0D2(msg: can.Message): #210
         # unknown
         return TranslatedMessage(msg.timestamp, '210', msg.data),
+    
     def _0D3(msg: can.Message): #211
         # unknown
         return TranslatedMessage(msg.timestamp, '211', msg.data),
         _211 = TranslatedMessage(msg.timestamp,'211',msg.data)
+    
     def _0D4(msg: can.Message): #212
         wheel_speed_FL = TranslatedMessage(msg.timestamp,'Wheel Speed FL',int.from_bytes([msg.data[0], msg.data[1]], 'little')) #0,1
         wheel_speed_FR = TranslatedMessage(msg.timestamp,'Wheel Speed FR',int.from_bytes([msg.data[2], msg.data[3]], 'little')) #2,3
         wheel_speed_RL = TranslatedMessage(msg.timestamp,'Wheel Speed RL',int.from_bytes([msg.data[4], msg.data[5]], 'little')) #4,5
         wheel_speed_RR = TranslatedMessage(msg.timestamp,'Wheel Speed RR',int.from_bytes([msg.data[6], msg.data[7]], 'little')) #6,7
         return wheel_speed_FL, wheel_speed_FR, wheel_speed_RL, wheel_speed_RR
+    
     def _140(msg: can.Message): #dec 320
         accelerator_position_percent = TranslatedMessage(msg.timestamp,'Accelerator Position Percent', (msg.data[7] / 2.55))
         throttle_position = TranslatedMessage(msg.timestamp,'Throttle Position',msg.data[6] / 2.55)
@@ -87,12 +91,16 @@ class FRSCommands:
         
     def _144(msg: can.Message): #324
         return TranslatedMessage(msg.timestamp,'324',msg.data),
+    
     def _152(msg: can.Message): #338
         return TranslatedMessage(msg.timestamp,'338',msg.data),
+    
     def _156(msg:can.Message): #342
         return TranslatedMessage(msg.timestamp,'342',msg.data),
+    
     def _282(msg: can.Message): #642
         return TranslatedMessage(msg.timestamp,'642',msg.data),
+    
     def _360(msg: can.Message): #864
         # coolant temp
         # engine oil temp

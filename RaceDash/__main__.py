@@ -41,6 +41,7 @@ def main():
         bus.closeConnection()
         recorder.dbConn.close()
         exit()
+    
     except Exception as e:
         print(e)
         print("Unable to establish connection. Shutting down")

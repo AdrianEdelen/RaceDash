@@ -2,6 +2,7 @@ import psycopg2
 import configparser
 
 class Broker:
+    
     def __init__(self) -> None:
         Config = configparser.ConfigParser()
         Config.read('/home/pi/RaceDash/RaceDash/RaceDash/config.ini')
