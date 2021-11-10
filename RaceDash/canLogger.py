@@ -10,7 +10,8 @@ import can
 import datetime
 from can.message import Message
 import psycopg2
-from RaceDash.commandDict import commmandDict
+from commandDict import commmandDict
+
 from message import TranslatedMessage
 import requests
 import api
@@ -25,7 +26,7 @@ class CanLogger:
         self.useDB = Config.getboolean('Config', 'UseDatabase'), 
         self.useFile = Config.getboolean('Config', 'UseFile'),
         self.useStream = Config.getboolean('Config', 'UseStream'), 
-        self.cmds = commmandDict.commmandDict(Config.get('Config', 'Car')).car
+        self.cmds = commmandDict(Config.get('Config', 'Car')).car
         if self.useDB:
             #prepare DB
             dbName = Config.get('Database', 'DBName')
@@ -54,7 +55,7 @@ class CanLogger:
         self.workerProc.start()
     def messageToDB(self, msg:TranslatedMessage):
         self.dbCursor.execute("INSERT INTO FRS (Timestamp, Name, Magnitude) VALUES (%s, %s, %s)", (msg.timeRecieved, msg.name, msg.magnitude))
-        self.dbConn.commit()
+        #self.dbConn.commit()
     def messageToFile(self, msg):
         date = datetime.datetime.now()
         logFile = open(f'logs\{date.strftime("%Y-%m-%d %H")}', 'a')
@@ -62,7 +63,9 @@ class CanLogger:
     def messageToStream(self, msg):
         print(msg)
     def calcCanMessage(self):
+        insertCount = 0
         while True:
+            insertCount += 1
             #if self.canBusQueue.unfinished_tasks > 100:
                 #not sure if we need to clear the queue out, in theory we could get stuck in a lag state
                 #that may be better since we would just wait after the car shuts down and the queue
@@ -75,9 +78,13 @@ class CanLogger:
                 #api.PutSingleFrame.put(processedMessage)
             else: #unknown packet
                 processedMessage = TranslatedMessage(msg.timestamp, msg.arbitration_id ,msg.data),
+            
             for msgSingle in processedMessage:
                 if self.useDB:
                     self.messageToDB(msgSingle)
+                    if insertCount > 5000:
+                        self.dbConn.commit()
+                        insertCount = 0
                 #TODO: push to ui
                 #TODO: push to file
                 #TODO: push to stream

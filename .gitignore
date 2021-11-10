@@ -4,3 +4,4 @@ tests/__pycache__/
 logs/
 .vscode/
 obj/
+RaceDash/config.ini

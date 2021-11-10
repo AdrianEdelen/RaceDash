@@ -1,9 +1,10 @@
 import json
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
+import dbBroker
 
 class api():
-    def __init__(self, dbBroker) -> None:
+    def __init__(self, dbBroker: dbBroker.Broker) -> None:
         super().__init__()
         #start api server
         app = Flask(__name__)
@@ -36,9 +37,8 @@ class api():
         pass
     def GetAllByRange():
         pass
-    def PutSingleFrame(self):
-        self.dbBroker.dbCursor.execute("INSERT INTO FRS (Timestamp, Name, Magnitude) VALUES (%s, %s, %s)", (msg.timeRecieved, msg.name, msg.magnitude))
-        self.dbBroker.dbConn.commit()
+    def PutSingleFrame(self, frame):
+        self.dbBroker.insert()
         pass
     def PutFrameGroup():
         pass
@@ -71,9 +71,7 @@ class GetLive(Resource):
         pass
 
 class PutSingleFrame(Resource):
-    def put(msg):
-        self.dbCursor.execute("INSERT INTO FRS (Timestamp, Name, Magnitude) VALUES (%s, %s, %s)", (msg.timeRecieved, msg.name, msg.magnitude))
-        self.dbConn.commit()
+    def put():
         pass
 
 class PutFrameGroup(Resource):

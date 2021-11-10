@@ -17,8 +17,6 @@ before they get sent here
  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 
 """
-#TODO these all need to be changed to messages instead of car properties
-
 #Warning, a lot of the calculations are empirical, they don't always make sense
 class FRSCommands:
     #copied from so, needs testing

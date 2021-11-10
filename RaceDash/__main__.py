@@ -17,8 +17,9 @@ def main():
         packetQueue = queue.Queue()
 
         #open DB Connection
+        broker = dbBroker.Broker()
         #start api server
-        lApi = api.api(dbBroker.Broker())
+        lApi = api.api(broker)
     
         #for testing purposes, use the mock canNetwork
         #bus = canNetwork.simCanCanUtils(packetQueue)
