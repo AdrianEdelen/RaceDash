@@ -17,3 +17,21 @@ Another primary goal of RaceDash is to allow alternate control of your vehicle, 
 Do you want to change the feedback of your electric power steering? these are things we hope to make possible with RaceDash.
 
 RaceDash is use at your own risk, and can be highly dangerous to you or your car if you don't know what you are doing.
+
+create a file called config.ini\
+here is an example config file
+
+[Config]\
+UseDatabase: Yes\
+UseFile: No\
+UseStream: No\
+UseAPI: No\
+Car: FRS\
+[Database]\
+DBName: dbname\
+DBUser: admin\
+DBPass: admin\
+DBHost: localhost\
+[CanNetwork]\
+
+RaceDash Processing Module requires a hardware can-bus connection to your car. if you are uncomfortable with soldering, working with voltages, or electronics, there are plenty of devices that you can connect to the car in various locations (including the obd port). the device just needs to use socketCAN on linux to work with RPM
