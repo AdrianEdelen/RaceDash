@@ -18,7 +18,7 @@ Do you want to change the feedback of your electric power steering? these are th
 
 RaceDash is use at your own risk, and can be highly dangerous to you or your car if you don't know what you are doing.
 
-create a file called config.ini
+create a file called config.ini\
 here is an example config file
 
 [Config]\
