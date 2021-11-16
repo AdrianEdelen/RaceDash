@@ -1,26 +1,16 @@
-import canLogger
 import canNetwork
 import asyncio
-"""
-The main method loads configurations, and starts the threads for parsing packets off of the bus
-"""
 async def main():
     try:
         bus = canNetwork.canCommunication('can0')
-        recorder = canLogger.CanLogger()
         while True:
             msgtuple = bus.calcCanMessage(await bus.asyncBufferedReader.get_message())
-            
             for translatedmsg in msgtuple:
-                #send to db
-                #send to UI
-                #send to File
-                #whatever
+                #Do Stuff
                 pass
     except KeyboardInterrupt:
         print("Keyboard Interrupt, Shutting Down")
         bus.closeConnection()
-        recorder.dbConn.close()
         exit()
     except Exception as e:
         print(e)

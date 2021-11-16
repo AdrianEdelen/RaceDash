@@ -5,7 +5,7 @@ import asyncio
 The CanNetwork pulls messages off of the bus (or simfile) and puts them into a queue for processing.
 """
 class canCommunication():
-    def __init__(self, device) -> None:
+    def __init__(self, device):
         self.Device = device
         self.notifier: can.Notifier = None
         self.bus: can.interface.Bus = None
