@@ -24,13 +24,10 @@ class FRSCommands:
         base = int(num // 8)
         shift = int(num % 8)
         return (data[base] >> shift) & 0x1
-
-
     def _018(msg: can.Message): #24
-        
+ 
         translatedMessage = TranslatedMessage(msg.timestamp, 'Steering Angle One', round(int.from_bytes([msg.data[0], msg.data[1]], 'little') * 0.1, 2))
-        #steering_angle_one = round(int.from_bytes([msg[0], msg[1]], 'little') * 0.1, 2)
-        return translatedMessage,
+        return translatedMessage
 
     def _0D0(msg: can.Message): #208
         steering_angle_two = TranslatedMessage(msg.timestamp, 'Steering Angle Two', round(int.from_bytes([msg.data[0], msg.data[1]], 'little') * 0.1, 2))
@@ -54,8 +51,6 @@ class FRSCommands:
     def _0D3(msg: can.Message): #211
         # unknown
         return TranslatedMessage(msg.timestamp, '211', msg.data),
-        _211 = TranslatedMessage(msg.timestamp,'211',msg.data)
-    
     def _0D4(msg: can.Message): #212
         wheel_speed_FL = TranslatedMessage(msg.timestamp,'Wheel Speed FL',int.from_bytes([msg.data[0], msg.data[1]], 'little')) #0,1
         wheel_speed_FR = TranslatedMessage(msg.timestamp,'Wheel Speed FR',int.from_bytes([msg.data[2], msg.data[3]], 'little')) #2,3
@@ -87,8 +82,7 @@ class FRSCommands:
         
     def _142(msg: can.Message): #322
         return TranslatedMessage(msg.timestamp,'322',msg.data),
-        # unknown
-        
+  
     def _144(msg: can.Message): #324
         return TranslatedMessage(msg.timestamp,'324',msg.data),
     
@@ -164,18 +158,15 @@ class FRSCommands:
         642: _282,  880: _370, 1088: _440,  865: _361,  864: _360,  882: _372,
         1595: _63B, 1090: _442,  885: _375,  884: _374, 1224: _4C8, 1761: _6E1,
         1762: _6E2, 1245: _4DD, 1219: _4C3, 1217: _4C1, 1222: _4C6, 211: _0D3}
-
 class MatrixCommands:
     pass
-
 class TCCommands:
     pass
-
-
 class commmandDict:
     def __init__(self, car) -> None:
         self.car = self.carDict[car]
         pass
-
     carDict = {
-        'FRS': FRSCommands.commands}
+        'FRS': FRSCommands.commands,
+        'Matrix': MatrixCommands.commands,
+        'TC': TCCommands.commands}
