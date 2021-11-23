@@ -1,5 +1,5 @@
 import can
-from message import TranslatedMessage
+from canNetwork import TranslatedMessage
 
 """
 This is the command dictionary for a 2013 Scion FRS

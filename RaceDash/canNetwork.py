@@ -13,7 +13,7 @@ class canCommunication():
         #TODO: Properly set up multiple can devices (should be scalable)
         os.system(f'sudo ip link set {self.Device} type can bitrate 500000')
         os.system(f'sudo ifconfig {self.Device} up')    
-        bus: can.BusABC = can.interface.ThreadSafeBus(bustype='socketcan', channel='can0', bitrate=500000)
+        bus: can.BusABC = can.ThreadSafeBus(bustype='socketcan', channel='can0', bitrate=500000)
         self.asyncBufferedReader = can.AsyncBufferedReader(self.bus, 0.1)
         loop = asyncio.get_event_loop()
         self.notifier = can.Notifier(bus, self.asyncBufferdReader, loop=loop)
