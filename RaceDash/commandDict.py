@@ -1,5 +1,6 @@
 import can
 from canNetwork import TranslatedMessage
+from enum import Enum
 
 """
 This is the command dictionary for a 2013 Scion FRS
@@ -17,6 +18,56 @@ before they get sent here
  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 
 """
+from enum import Enum
+class MessageNames(Enum):
+    SteeringAngleOne
+    SteeringAngleTwo
+    YawRate
+    LateralAccel
+    LongAccel
+    Speed
+    BrakePressure
+    WheelSpeedFL
+    WheelSpeedFR
+    WheelSpeedRL
+    WheelSpeedRR
+    AccelPositionPercent
+    ThrottlePosition
+
+class MessageNames(Enum):
+    READY = "ready", "I'm ready to do whatever is needed"
+    ERROR = "error", "Something went wrong here"
+    SteeringAngleOne = "Steering Angle One"
+    SteeringAngleTwo = "Steering Angle Two"
+    YawRate = "Yaw Rate"
+    LateralAccel = "Lateral Acceleration"
+    LongAccel = "Longitudinal Acceleration"
+    Speed = "Speed"
+    BrakePressure = "Brake Pressure"
+    WheelSpeedFL = "Front Left Wheel Speed"
+    WheelSpeedFR = "Front Right Wheel Speed"
+    WheelSpeedRL = "Rear Left Wheel Speed"
+    WheelSpeedRR = "Rear Right Wheel Speed"
+    AccelPositionPercent = "Accelerator Position Percent"
+    ThrottlePosition = "Throttle Position"
+
+    def __new__(cls, *args, **kwds):
+        obj = object.__new__(cls)
+        obj._value_ = args[0]
+        return obj
+
+    # ignore the first param since it's already set by __new__
+    def __init__(self, _: str, description: str = None):
+        self._description_ = description
+
+    def __str__(self):
+        return self.value
+
+    # this makes sure that the description is read-only
+    @property
+    def description(self):
+        return self._description_
+
 #Warning, a lot of the calculations are empirical, they don't always make sense
 class FRSCommands:
     #copied from so, needs testing
@@ -24,23 +75,24 @@ class FRSCommands:
         base = int(num // 8)
         shift = int(num % 8)
         return (data[base] >> shift) & 0x1
+
     def _018(msg: can.Message): #24
  
-        translatedMessage = TranslatedMessage(msg.timestamp, 'Steering Angle One', round(int.from_bytes([msg.data[0], msg.data[1]], 'little') * 0.1, 2))
+        translatedMessage = TranslatedMessage(msg.timestamp, MessageNames.SteeringAngleOne, round(int.from_bytes([msg.data[0], msg.data[1]], 'little') * 0.1, 2))
         return translatedMessage
 
     def _0D0(msg: can.Message): #208
-        steering_angle_two = TranslatedMessage(msg.timestamp, 'Steering Angle Two', round(int.from_bytes([msg.data[0], msg.data[1]], 'little') * 0.1, 2))
-        yaw_rate = TranslatedMessage(msg.timestamp,'',round(int.from_bytes([msg.data[2], msg.data[3]], 'little') * -0.286478897, 2))
+        steering_angle_two = TranslatedMessage(msg.timestamp, MessageNames.SteeringAngleTwo, round(int.from_bytes([msg.data[0], msg.data[1]], 'little') * 0.1, 2))
+        yaw_rate = TranslatedMessage(msg.timestamp,MessageNames.YawRate,round(int.from_bytes([msg.data[2], msg.data[3]], 'little') * -0.286478897, 2))
 
-        lateral_accel = TranslatedMessage(msg.timestamp,'',round(msg.data[6] * 0.2, 2))
-        long_accel = TranslatedMessage(msg.timestamp,'',round(msg.data[7] * -0.1, 2))
+        lateral_accel = TranslatedMessage(msg.timestamp,MessageNames.LateralAccel,round(msg.data[6] * 0.2, 2))
+        long_accel = TranslatedMessage(msg.timestamp,MessageNames.LongAccel,round(msg.data[7] * -0.1, 2))
         return steering_angle_two, yaw_rate, lateral_accel, long_accel
 
 
     def _0D1(msg: can.Message): #209
-        speed = TranslatedMessage(msg.timestamp,'Speed',round(int.from_bytes([msg.data[0],msg.data[1]],'little'), 2))
-        brake_pressure = TranslatedMessage(msg.timestamp,'Brake Pressure',min(msg.data[2] / 0.7, 100))
+        speed = TranslatedMessage(msg.timestamp,MessageNames.Speed,round(int.from_bytes([msg.data[0],msg.data[1]],'little'), 2))
+        brake_pressure = TranslatedMessage(msg.timestamp,MessageNames.BrakePressure,min(msg.data[2] / 0.7, 100))
 
         return speed, brake_pressure
     
@@ -52,15 +104,15 @@ class FRSCommands:
         # unknown
         return TranslatedMessage(msg.timestamp, '211', msg.data),
     def _0D4(msg: can.Message): #212
-        wheel_speed_FL = TranslatedMessage(msg.timestamp,'Wheel Speed FL',int.from_bytes([msg.data[0], msg.data[1]], 'little')) #0,1
-        wheel_speed_FR = TranslatedMessage(msg.timestamp,'Wheel Speed FR',int.from_bytes([msg.data[2], msg.data[3]], 'little')) #2,3
-        wheel_speed_RL = TranslatedMessage(msg.timestamp,'Wheel Speed RL',int.from_bytes([msg.data[4], msg.data[5]], 'little')) #4,5
-        wheel_speed_RR = TranslatedMessage(msg.timestamp,'Wheel Speed RR',int.from_bytes([msg.data[6], msg.data[7]], 'little')) #6,7
+        wheel_speed_FL = TranslatedMessage(msg.timestamp,MessageNames.WheelSpeedFL,int.from_bytes([msg.data[0], msg.data[1]], 'little')) #0,1
+        wheel_speed_FR = TranslatedMessage(msg.timestamp,MessageNames.WheelSpeedFR,int.from_bytes([msg.data[2], msg.data[3]], 'little')) #2,3
+        wheel_speed_RL = TranslatedMessage(msg.timestamp,MessageNames.WheelSpeedRL,int.from_bytes([msg.data[4], msg.data[5]], 'little')) #4,5
+        wheel_speed_RR = TranslatedMessage(msg.timestamp,MessageNames.WheelSpeedRR,int.from_bytes([msg.data[6], msg.data[7]], 'little')) #6,7
         return wheel_speed_FL, wheel_speed_FR, wheel_speed_RL, wheel_speed_RR
     
     def _140(msg: can.Message): #dec 320
         accelerator_position_percent = TranslatedMessage(msg.timestamp,'Accelerator Position Percent', (msg.data[7] / 2.55))
-        throttle_position = TranslatedMessage(msg.timestamp,'Throttle Position',msg.data[6] / 2.55)
+        throttle_position = TranslatedMessage(msg.timestamp,MessageNames.ThrottlePosition,msg.data[6] / 2.55)
         #for engine rpm we need bits from pos:16 through 30
         #this is a nightmare
         # bits = [commandDict.access_bit(msg,i) for i in range(len(msg)*8)]

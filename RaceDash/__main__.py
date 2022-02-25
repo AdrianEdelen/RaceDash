@@ -1,5 +1,6 @@
 import canNetwork
 import asyncio
+from MessageNames import MessageNames
 async def main():
     try:
         #For testing implement a message counter
@@ -11,9 +12,10 @@ async def main():
         while True:
             msgtuple = bus.calcCanMessage(await bus.asyncBufferedReader.get_message())
             for translatedmsg in msgtuple:
-                messageCounter += 1
-                #Do Stuff
-                pass
+                if translatedmsg.name == MessageNames.Speed:
+                    messageCounter += 1
+                    #so far here is where we are doing stuff with the messages
+                
     except KeyboardInterrupt:
         print("Keyboard Interrupt, Shutting Down")
         bus.closeConnection()
@@ -22,7 +24,7 @@ async def main():
         print(e)
         print("Unable to establish connection. Shutting down")     
 
-        
+ 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
 loop.close()
