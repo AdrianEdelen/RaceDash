@@ -29,7 +29,9 @@ class canCommunication():
 
 """Message is a single translated piece of data from the can bus"""
 class TranslatedMessage():   
-    def __init__(self, timeReceived: float, name: str, magnitude: str):
+    def __init__(self, timeReceived: float, name, magnitude: str):
         self.timeReceived = round(timeReceived,3)
         self.name = name
         self.magnitude = magnitude
+
+    
