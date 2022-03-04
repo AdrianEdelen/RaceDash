@@ -1,8 +1,6 @@
 import os
 import can
 import asyncio
-import enum
-from MessageNames import MessageNames
 """
 The CanNetwork pulls messages off of the bus (or simfile) and puts them into a queue for processing.
 """
@@ -31,7 +29,7 @@ class canCommunication():
 
 """Message is a single translated piece of data from the can bus"""
 class TranslatedMessage():   
-    def __init__(self, timeReceived: float, name: MessageNames, magnitude: str):
+    def __init__(self, timeReceived: float, name, magnitude: str):
         self.timeReceived = round(timeReceived,3)
         self.name = name
         self.magnitude = magnitude

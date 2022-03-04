@@ -1,6 +1,6 @@
 import canNetwork
 import asyncio
-from MessageNames import MessageNames
+from commandDict import MessageNames
 async def main():
     try:
         #For testing implement a message counter

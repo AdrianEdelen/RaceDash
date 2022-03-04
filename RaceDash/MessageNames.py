@@ -1,4 +1,7 @@
+from enum import Enum
 class MessageNames(Enum):
+    READY = "ready", "I'm ready to do whatever is needed"
+    ERROR = "error", "Something went wrong here"
     SteeringAngleOne = "Steering Angle One"
     SteeringAngleTwo = "Steering Angle Two"
     YawRate = "Yaw Rate"
