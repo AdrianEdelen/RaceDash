@@ -35,3 +35,8 @@ DBHost: localhost\
 [CanNetwork]\
 
 RaceDash Processing Module requires a hardware can-bus connection to your car. if you are uncomfortable with soldering, working with voltages, or electronics, there are plenty of devices that you can connect to the car in various locations (including the obd port). the device just needs to use socketCAN on linux to work with RPM
+
+
+TODO: build out an agostic json api
+todo: work on a js frontend that can start graphing some of this stuff
+todo: get the read from file working again.
