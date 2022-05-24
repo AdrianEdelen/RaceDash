@@ -1,5 +1,6 @@
 import can
 from canNetwork import TranslatedMessage
+from MessageNames import MessageNames
 
 
 """
@@ -29,7 +30,7 @@ class FRSCommands:
     def _018(msg: can.Message): #24
  
         translatedMessage = TranslatedMessage(msg.timestamp, MessageNames.SteeringAngleOne, round(int.from_bytes([msg.data[0], msg.data[1]], 'little') * 0.1, 2))
-        return translatedMessage
+        return translatedMessage,
 
     def _0D0(msg: can.Message): #208
         steering_angle_two = TranslatedMessage(msg.timestamp, MessageNames.SteeringAngleTwo, round(int.from_bytes([msg.data[0], msg.data[1]], 'little') * 0.1, 2))
@@ -53,6 +54,7 @@ class FRSCommands:
     def _0D3(msg: can.Message): #211
         # unknown
         return TranslatedMessage(msg.timestamp, '211', msg.data),
+    
     def _0D4(msg: can.Message): #212
         wheel_speed_FL = TranslatedMessage(msg.timestamp,MessageNames.WheelSpeedFL,int.from_bytes([msg.data[0], msg.data[1]], 'little')) #0,1
         wheel_speed_FR = TranslatedMessage(msg.timestamp,MessageNames.WheelSpeedFR,int.from_bytes([msg.data[2], msg.data[3]], 'little')) #2,3
@@ -61,7 +63,7 @@ class FRSCommands:
         return wheel_speed_FL, wheel_speed_FR, wheel_speed_RL, wheel_speed_RR
     
     def _140(msg: can.Message): #dec 320
-        accelerator_position_percent = TranslatedMessage(msg.timestamp,'Accelerator Position Percent', (msg.data[7] / 2.55))
+        accelerator_position_percent = TranslatedMessage(msg.timestamp,MessageNames.AccelPositionPercent, (msg.data[7] / 2.55))
         throttle_position = TranslatedMessage(msg.timestamp,MessageNames.ThrottlePosition,msg.data[6] / 2.55)
         #for engine rpm we need bits from pos:16 through 30
         #this is a nightmare
@@ -79,6 +81,7 @@ class FRSCommands:
         # throttle pos
         # accel pedal on/off
         return accelerator_position_percent, throttle_position
+    
     def _141(msg: can.Message): #321
         return TranslatedMessage(msg.timestamp,'321',msg.data),
         
@@ -106,8 +109,8 @@ class FRSCommands:
         return TranslatedMessage(msg.timestamp,'864',msg.data),
         
     def _361(msg: can.Message): #865
-        return TranslatedMessage(msg.timestamp,'865',msg.data),
         # gear
+        return TranslatedMessage(msg.timestamp,'865',msg.data),
         
     def _370(msg: can.Message): #880
         return TranslatedMessage(msg.timestamp,'880',msg.data),
@@ -160,10 +163,15 @@ class FRSCommands:
         642: _282,  880: _370, 1088: _440,  865: _361,  864: _360,  882: _372,
         1595: _63B, 1090: _442,  885: _375,  884: _374, 1224: _4C8, 1761: _6E1,
         1762: _6E2, 1245: _4DD, 1219: _4C3, 1217: _4C1, 1222: _4C6, 211: _0D3}
+
 class MatrixCommands:
-    pass
+
+    commands = {}
+
 class TCCommands:
-    pass
+
+    commands = {}
+
 class commmandDict:
     def __init__(self, car) -> None:
         self.car = self.carDict[car]
