@@ -16,9 +16,12 @@ async def main():
         #just append each new message that comes through to a list
         #display it just like in the console with live values
         #expirement with the car until the values make sense
-        json = jsonManager.jsonManager()
-        context = dbCon.db()
+        try: 
+            context = dbCon.db()
+        except e:
+            print(e)
 
+        json = jsonManager.jsonManager()
 
         file = open(testFilePath,'r')
         lines = file.readlines()
@@ -27,17 +30,15 @@ async def main():
 
         if not testing:
             bus = canNetwork.canCommunication('can0')
-
             while True:
                 msgtuple = bus.calcCanMessage(await bus.asyncBufferedReader.get_message())
-                
                 for translatedmsg in msgtuple:
                     for name in MessageNames:
                         if translatedmsg.name == name:
-                            json.appendToJson(translatedmsg)
+                            if context.connected:
+                                json.appendToJson(translatedmsg)
 
-                            pass
-                            #write to disk (probably json)
+
 
         else:
             cmds = commmandDict('FRS')
@@ -55,12 +56,14 @@ async def main():
                     msg = type('',(object,),{"timestamp": timestamp, "arbitration_id":int(idAndData[0], 16), "data":databytes })()
                     msgtuple = bus.calcCanMessage(msg)
                     for msg in msgtuple:
+                        #write to db and create json
+                        #when connection is established, start loading the json and comparing it against the db. if it doesn't exist in the db then add it
+                        #only delete json if the max json file size is reached (maybe like 20gb? depending on the amount of data?)
                         json.appendToJson(msg)
-                        context.InsertMsg(msg)
-                        if msg.name == MessageNames.SteeringAngleOne:
-                            print(msg.magnitude, end='\r')
-
-            pass
+                        if context.connected:
+                            context.InsertMsg(msg)
+                        #if msg.name == MessageNames.SteeringAngleOne:
+                        #    print(msg.magnitude, end='\r')
 
     except KeyboardInterrupt:
         print("Keyboard Interrupt, Shutting Down")
@@ -72,7 +75,7 @@ async def main():
         print(e)
         print("Unable to establish connection. Shutting down")     
     finally:
-        if (context.con):
+        if (context.connected):
             context.cur.close()
             context.con.close()
 

@@ -1,3 +1,4 @@
+from logging import exception
 import psycopg2
 
 from canNetwork import TranslatedMessage
@@ -17,8 +18,15 @@ from canNetwork import TranslatedMessage
 
 class db:
     def __init__(self) -> None:
-        self.con = psycopg2.connect(database="racedash",user="admin", password="admin", host="192.168.1.41", port="23543")
-        self.cur = self.con.cursor()
+        self.connected = False
+
+        try:
+            self.con = psycopg2.connect(database="racedash",user="admin", password="admin", host="192.168.1.41", port="23543")
+            self.cur = self.con.cursor()
+            self.connected = True
+        except Exception as e:
+            print(e)
+            self.connected = False
 
     def InsertMsg(self, msg: TranslatedMessage):
         self.cur.execute("SELECT * from information_schema.tables")

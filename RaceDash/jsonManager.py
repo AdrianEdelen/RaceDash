@@ -1,3 +1,5 @@
+#Somewhere in here we are overwriting the data.
+
 import json
 import os
 
@@ -24,19 +26,18 @@ class jsonManager:
             return True
 
     def WriteJsonToDB():
-
         pass
 
     def appendToJson(self, translatedMsg: TranslatedMessage):
         if hasattr(translatedMsg.name, 'description'):
             translatedMsg.name = translatedMsg.name.description
-        jsonobj = json.dump(translatedMsg.__dict__,self.file, ensure_ascii=False)
+        json.dump(translatedMsg.__dict__,self.file, ensure_ascii=False)
         self.file.write(',\n')
         self.file.flush()
+
+    def removeFromJson(self):
+        self.json
         pass
 
-    def removeFromJson():
-        pass
-
-    def printJson():
+    def printJson(self):
         print(json.dumps())
