@@ -1,3 +1,7 @@
+import psycopg2
+
+from canNetwork import TranslatedMessage
+
 #postgres
 #CRUD
 
@@ -11,3 +15,13 @@
 #insert to db when connected
 #once commited and confirmed delete from disk
 
+class db:
+    def __init__(self) -> None:
+        self.con = psycopg2.connect(database="racedash",user="admin", password="admin", host="192.168.1.41", port="23543")
+        self.cur = self.con.cursor()
+
+    def InsertMsg(self, msg: TranslatedMessage):
+        self.cur.execute("SELECT * from information_schema.tables")
+        s = self.cur.fetchone()
+        self.cur.execute("INSERT INTO messages (MsgId, Data, timestamp) VALUES (%s, %s, %s)", (msg.name, msg.magnitude, msg.timeReceived))
+        self.con.commit()
